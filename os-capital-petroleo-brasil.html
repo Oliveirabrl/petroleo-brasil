@@ -1,0 +1,2501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OS CAPITAL — Petróleo Brasil 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+// ══════════════════════════════════════════════════════
+// OS CAPITAL — DADOS DO SETOR (EDITE AQUI PARA ATUALIZAR)
+// ══════════════════════════════════════════════════════
+/**
+ * OS CAPITAL — DADOS DO SETOR DE PETRÓLEO & ENERGIA
+ * ──────────────────────────────────────────────────
+ * ARQUIVO DE ATUALIZAÇÃO PERIÓDICA
+ * Edite apenas este arquivo para atualizar todo o dashboard.
+ * Último update: 28/03/2026
+ */
+
+window.DADOS_SETOR = {
+
+  // ── METADADOS ─────────────────────────────────────────────
+  meta: {
+    atualizadoEm: "28/03/2026",
+    proximaRevisao: "04/04/2026",
+    brent: 100.9,          // USD/bbl
+    brentAnterior: 63.0,   // USD/bbl — início de 2026 (para delta)
+    cambio: 5.72,           // BRL/USD
+    ibov: 132500,
+    cenarioGlobal: "critico",  // ok | alerta | critico
+    alertas: [
+      "Hormuz bloqueado desde 28/02/2026 — 20% do petróleo mundial sem rota",
+      "Rússia proíbe exportação de gasolina a partir de 01/04/2026",
+      "EUA retirou sanções ao diesel russo — concorre diretamente com o Brasil",
+      "Ucrânia destruiu 17% da capacidade de refino russa (drones)",
+      "Brent +49% desde jan/26 · Diesel 52% abaixo da paridade PPI",
+      "Greve caminhoneiros ativa — Brasil depende 63% do modal rodoviário"
+    ],
+    // Contexto narrativo — atualizar a cada ciclo
+    narrativa: "TRIPLO CHOQUE DE OFERTA — O Brasil enfrenta simultaneamente três cortes de fornecimento de diesel: (1) Hormuz bloqueado pelo Irã desde 28/02/2026, interrompendo rotas do Golfo Pérsico; (2) Rússia — que respondia por 50-74% das importações de diesel brasileiro — proibindo exportações de gasolina a partir de 01/04 e com refinarias destruídas por drones ucranianos (–17% capacidade); (3) EUA retirando sanções ao diesel russo em 12/03/2026, entrando em competição direta com o Brasil pelo mesmo produto com desconto. O que era um 'oceano azul' de diesel russo barato virou arena de disputa global. Quem pagar mais, leva."
+  },
+
+  // ── PARÂMETROS DE SENSIBILIDADE GLOBAL ────────────────────
+  sensibilidade: {
+    // Impacto de variação de US$10 no Brent sobre cada empresa (%)
+    impactoPor10dolarBrent: {
+      PETR4: { receita: +3.8, ebitda: +5.2, nota: "duplo: E&P ganha, downstream perde se houver cap político" },
+      PRIO3: { receita: +7.2, ebitda: +9.1, nota: "puro beneficiário — sem downstream, sem cap político" },
+      RECV3: { receita: +6.1, ebitda: +7.8, nota: "onshore, custos fixos maiores mas sem risco político direto" },
+      // Nota: impacto Rússia → Brasil calculado via escassez de oferta e alta de preços de compra
+      RAIZ4: { receita: -0.8, ebitda: -1.2, nota: "etanol funciona como hedge natural — consumidor troca" },
+      UGPA3: { receita: -1.4, ebitda: -2.8, nota: "margem de distribuição comprimida, repasse lento" },
+      VBBR3: { receita: -1.6, ebitda: -3.1, nota: "mesma dinâmica da UGPA3, maior alavancagem operacional" },
+      BRKM5: { receita: -4.2, ebitda: -7.5, nota: "naphtha = input direto. Brent alto = custo explode" }
+    }
+  },
+
+  // ── EMPRESAS ─────────────────────────────────────────────
+  empresas: {
+
+    PETR4: {
+      ticker: "PETR4",
+      nome: "Petrobras PN",
+      nomeCompleto: "Petróleo Brasileiro S.A.",
+      tipo: "Integrada",
+      subsetor: "E&P + Refino + Distribuição",
+      icone: "🛢️",
+      // Dados de mercado
+      preco: 49.41,
+      precoAlvoConsensus: 46.11,
+      precoAlvoMin: 37.00,
+      precoAlvoMax: 60.00,
+      pl: 5.78,
+      pvp: 1.52,
+      dy: 6.64,            // % últimos 12m
+      varYTD: +60.4,       // % ano
+      var12m: +45.3,       // %
+      // Fundamentals
+      ebitdaMargin: 45.1,  // %
+      ebitdaUSD: 43.8,     // bi USD 2025
+      lucroLiqUSD: 19.6,   // bi USD 2025
+      fcfUSD: 16.5,        // bi USD 2025
+      dividaLiqUSD: 60.6,  // bi USD
+      capexUSD: 20.3,      // bi USD 2025
+      // Posição no setor
+      sensibilidadeBrent: 55,    // -100 (hurtado) a +100 (beneficiado)
+      riscoRegulatorio: 85,      // 0 (nenhum) a 100 (máximo)
+      // Análise
+      tese: "A Petrobras é o caso mais complexo do setor. Pelo lado do E&P, o Brent a US$100 é puro lucro — custo de extração do pré-sal é US$6-8/bbl. Pelo lado do downstream, a política de preços criou uma defasagem de 52% no diesel, destruindo margem de refino silenciosamente. Em ano eleitoral, a pressão para não repassar é máxima.",
+      bull: [
+        "E&P pré-sal: margem bruta ~US$92/bbl com Brent $100",
+        "FUT 93,2% — refinarias no limite da capacidade",
+        "Taxa reposição reservas de 175% (+12 anos garantidos)",
+        "Dividend yield 14% cria piso estrutural de demanda",
+        "Fluxo de commodities funds estrangeiros ignora risco político BR"
+      ],
+      bear: [
+        "Defasagem diesel 52% = subsídio implícito que queima FCF",
+        "FCF caiu –29% em 2025, capex subiu +22%",
+        "Ano eleitoral 2026 maximiza pressão por não repasse",
+        "PETR4 já acima do preço-alvo médio dos analistas (R$46,11)",
+        "Dívida líquida cresceu +16% para US$60,6bi em 2025"
+      ],
+      // Matriz Brent × Intervenção → Preço-alvo implícito (R$)
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 42, 80: 52, 100: 64, 120: 75 },
+          "Moderada": { 65: 36, 80: 44, 100: 50, 120: 57 },
+          "Total":    { 65: 28, 80: 33, 100: 35, 120: 38 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Moderada"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "COMPRA", target: 56 },
+        { casa: "XP Investimentos", rec: "COMPRA", target: 47 },
+        { casa: "Bank of America", rec: "NEUTRO", target: 49 },
+        { casa: "UBS BB", rec: "COMPRA", target: 52 }
+      ]
+    },
+
+    PRIO3: {
+      ticker: "PRIO3",
+      nome: "PRIO",
+      nomeCompleto: "PetroRio S.A.",
+      tipo: "E&P Puro",
+      subsetor: "Exploração & Produção offshore",
+      icone: "⛏️",
+      preco: 47.20,
+      precoAlvoConsensus: 55.80,
+      precoAlvoMin: 44.00,
+      precoAlvoMax: 68.00,
+      pl: 8.3,
+      pvp: 2.1,
+      dy: 1.2,
+      varYTD: +72.1,
+      var12m: +58.4,
+      ebitdaMargin: 62.0,
+      ebitdaUSD: 1.8,
+      lucroLiqUSD: 0.9,
+      fcfUSD: 1.1,
+      dividaLiqUSD: 2.2,
+      capexUSD: 0.8,
+      sensibilidadeBrent: 92,
+      riscoRegulatorio: 12,
+      tese: "PRIO é o trade mais puro de Brent alto no Brasil. Sem refino, sem distribuição, sem cap político de preços. Opera campos maduros de pré-sal (Frade, Wahoo, Tubarao Martelo) com custo de lifting em torno de US$12-15/bbl. Com Brent a US$100, FCFE yield acima de 15%. Único risco relevante é operacional (execução) e reversão abrupta do Brent.",
+      bull: [
+        "Pure play E&P: 100% da receita atrelada ao Brent sem cap político",
+        "Custo de lifting US$12-15/bbl → margem bruta ~US$85/bbl agora",
+        "Crescimento orgânico via Wahoo (ramp-up 2025-26)",
+        "Sem risco de intervenção governamental em preços",
+        "Upside de 18% vs consenso — espaço para re-rating"
+      ],
+      bear: [
+        "Ceasefire: sem downstream para amortecer queda do Brent",
+        "Concentração em poucos ativos — risco operacional específico",
+        "Dívida crescente com aquisições (RECV parcial)",
+        "Liquidez menor que PETR4 — amplifica volatilidade"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 28, 80: 38, 100: 55, 120: 72 },
+          "Moderada": { 65: 28, 80: 38, 100: 55, 120: 72 },
+          "Total":    { 65: 28, 80: 38, 100: 55, 120: 72 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Nenhuma",
+        nota: "Sem downstream — intervenção política não afeta diretamente"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "COMPRA", target: 62 },
+        { casa: "XP Investimentos", rec: "COMPRA", target: 58 },
+        { casa: "Itaú BBA", rec: "COMPRA", target: 55 }
+      ]
+    },
+
+    RECV3: {
+      ticker: "RECV3",
+      nome: "PetroRecôncavo",
+      nomeCompleto: "PetroRecôncavo S.A.",
+      tipo: "E&P Onshore",
+      subsetor: "Exploração & Produção terrestre",
+      icone: "🔩",
+      preco: 18.40,
+      precoAlvoConsensus: 22.50,
+      precoAlvoMin: 17.00,
+      precoAlvoMax: 28.00,
+      pl: 9.1,
+      pvp: 1.4,
+      dy: 3.8,
+      varYTD: +44.2,
+      var12m: +31.6,
+      ebitdaMargin: 48.0,
+      ebitdaUSD: 0.35,
+      lucroLiqUSD: 0.18,
+      fcfUSD: 0.22,
+      dividaLiqUSD: 0.55,
+      capexUSD: 0.18,
+      sensibilidadeBrent: 72,
+      riscoRegulatorio: 18,
+      tese: "RECV opera campos maduros onshore no Recôncavo Baiano e RN. Custo de lifting maior que offshore (~US$20-25/bbl) mas ainda muito lucrativo com Brent $100. Sem risco político de downstream. A tese é de crescimento via aquisições de ativos maduros subaproveitados da Petrobras — ainda há pipeline relevante. Menor liquidez, mais volátil.",
+      bull: [
+        "Pure E&P sem cap político — receita 100% Brent",
+        "Pipeline de aquisições de campos maduros da Petrobras",
+        "Upside de 22% vs consenso atual",
+        "Diversificação geográfica crescente (RN, BA, SE)"
+      ],
+      bear: [
+        "Custo lifting onshore (US$20-25/bbl) maior que offshore",
+        "Alavancagem financeira crescente com aquisições",
+        "Pouca liquidez em bolsa — spread bid-ask mais largo",
+        "Dependência de contratos de venda a preço de referência Brent"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 12, 80: 16, 100: 22, 120: 30 },
+          "Moderada": { 65: 12, 80: 16, 100: 22, 120: 30 },
+          "Total":    { 65: 12, 80: 16, 100: 22, 120: 30 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Nenhuma",
+        nota: "Sem downstream — intervenção política não afeta diretamente"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "COMPRA", target: 26 },
+        { casa: "XP Investimentos", rec: "NEUTRO", target: 20 }
+      ]
+    },
+
+    RAIZ4: {
+      ticker: "RAIZ4",
+      nome: "Raízen",
+      nomeCompleto: "Raízen S.A.",
+      tipo: "Integrada Etanol + Dist.",
+      subsetor: "Açúcar, Etanol & Distribuição de Combustíveis",
+      icone: "🌿",
+      preco: 2.85,
+      precoAlvoConsensus: 3.80,
+      precoAlvoMin: 2.40,
+      precoAlvoMax: 5.20,
+      pl: 22.4,
+      pvp: 0.65,
+      dy: 4.2,
+      varYTD: +12.8,
+      var12m: -18.6,
+      ebitdaMargin: 12.0,
+      ebitdaUSD: 1.4,
+      lucroLiqUSD: 0.25,
+      fcfUSD: -0.3,
+      dividaLiqUSD: 6.8,
+      capexUSD: 1.8,
+      sensibilidadeBrent: -15,
+      riscoRegulatorio: 42,
+      tese: "Raízen é o caso mais complexo do setor. Do lado positivo, produz etanol de cana — e quando gasolina sobe, consumidores migram para etanol, elevando preço e volume. Do lado negativo, distribui combustíveis (Shell no Brasil) e enfrenta squeeze de margem com diesel caro. A tese de longo prazo é o E2G (etanol de segunda geração) que ainda não entregou o prometido. Alto endividamento pesa.",
+      bull: [
+        "RÚSSIA + HORMUZ: diesel escasso e caro → consumidor flex migra para etanol hidratado",
+        "Choque de oferta de diesel é o MELHOR cenário para o etanol — hedge natural perfeito",
+        "E30 obrigatório aumenta demanda estrutural de anidro",
+        "Maior rede de postos Shell do Brasil — capilaridade de distribuição",
+        "Upside de 33% vs consenso — a ação mais subavaliada do setor neste cenário"
+      ],
+      bear: [
+        "FCF negativo em 2025 — empresa consome caixa",
+        "Dívida líquida de US$6,8bi é pesada para o tamanho da empresa",
+        "E2G (Biomassa) ainda longe do breakeven prometido",
+        "Distribuição sofre com diesel caro e margem de repasse lenta",
+        "Exposição à safra — estiagem de 2024/25 afetou moagem"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 4.2, 80: 3.8, 100: 3.6, 120: 3.2 },
+          "Moderada": { 65: 3.8, 80: 3.5, 100: 3.4, 120: 3.0 },
+          "Total":    { 65: 3.5, 80: 3.2, 100: 3.0, 120: 2.7 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Moderada",
+        nota: "Efeito invertido: Brent alto eleva etanol mas comprime distribuição"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "COMPRA", target: 5.0 },
+        { casa: "XP Investimentos", rec: "COMPRA", target: 4.2 },
+        { casa: "Itaú BBA", rec: "NEUTRO", target: 3.2 }
+      ]
+    },
+
+    UGPA3: {
+      ticker: "UGPA3",
+      nome: "Ultrapar / Ipiranga",
+      nomeCompleto: "Ultrapar Participações S.A.",
+      tipo: "Distribuição",
+      subsetor: "Distribuição de Combustíveis (Ipiranga)",
+      icone: "⛽",
+      preco: 19.80,
+      precoAlvoConsensus: 21.50,
+      precoAlvoMin: 16.00,
+      precoAlvoMax: 26.00,
+      pl: 14.2,
+      pvp: 1.8,
+      dy: 5.1,
+      varYTD: +8.4,
+      var12m: +12.3,
+      ebitdaMargin: 5.8,
+      ebitdaUSD: 0.48,
+      lucroLiqUSD: 0.22,
+      fcfUSD: 0.18,
+      dividaLiqUSD: 1.2,
+      capexUSD: 0.38,
+      sensibilidadeBrent: -28,
+      riscoRegulatorio: 55,
+      tese: "Ultrapar é a maior distribuidora independente do Brasil via Ipiranga. O modelo de negócio depende da margem de distribuição — diferença entre o preço que paga à refinaria e o que cobra ao posto. Com Brent alto, essa margem comprime: o custo de estoque sobe antes do repasse. Pior ainda quando distribuidoras privadas não conseguem repassar para não perder volume para a concorrente. Risco de curto prazo elevado.",
+      bull: [
+        "Rede Ipiranga: maior capilaridade privada de postos no Brasil",
+        "Gestão ativa de estoque mitiga parte do squeeze de margem",
+        "Upside de 8,6% vs consenso — não está caro",
+        "Crescimento de conveniências (AmPm) como receita complementar"
+      ],
+      bear: [
+        "RÚSSIA: fornecia diesel barato — agora proibição bate direto no custo de importação",
+        "EUA sanções removidas → competição pelo diesel russo → preço sobe",
+        "Margem de distribuição comprimida: custo sobe antes do repasse",
+        "Investigada junto com setor por práticas de preços abusivos",
+        "Menor diversificação que RAIZ4 — pura distribuição, sem hedge"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 26, 80: 24, 100: 21, 120: 18 },
+          "Moderada": { 65: 24, 80: 22, 100: 20, 120: 17 },
+          "Total":    { 65: 22, 80: 20, 100: 18, 120: 15 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Moderada",
+        nota: "Brent alto = custo de estoque sobe antes do repasse → margem comprime"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "NEUTRO", target: 22 },
+        { casa: "XP Investimentos", rec: "NEUTRO", target: 21 }
+      ]
+    },
+
+    VBBR3: {
+      ticker: "VBBR3",
+      nome: "Vibra / BR Dist.",
+      nomeCompleto: "Vibra Energia S.A. (ex-BR Distribuidora)",
+      tipo: "Distribuição",
+      subsetor: "Distribuição de Combustíveis (BR/Petrobras)",
+      icone: "🔴",
+      preco: 18.60,
+      precoAlvoConsensus: 20.80,
+      precoAlvoMin: 15.00,
+      precoAlvoMax: 25.00,
+      pl: 11.8,
+      pvp: 1.6,
+      dy: 6.2,
+      varYTD: +5.1,
+      var12m: +8.7,
+      ebitdaMargin: 4.2,
+      ebitdaUSD: 0.32,
+      lucroLiqUSD: 0.18,
+      fcfUSD: 0.14,
+      dividaLiqUSD: 0.95,
+      capexUSD: 0.28,
+      sensibilidadeBrent: -32,
+      riscoRegulatorio: 62,
+      tese: "Vibra é a antiga BR Distribuidora, privatizada no governo Bolsonaro. Compra combustível da Petrobras e distribui para postos e clientes industriais. É o elo mais exposto da cadeia: sem controle sobre o preço de compra (Petrobras decide) e com dificuldade de repasse rápido. A 'regulação de mercado' que antes a BR exercia como estatal deixou de existir — agora é uma distribuidora privada numa corrida de margens.",
+      bull: [
+        "Maior rede de postos BR do Brasil — reconhecimento de marca forte",
+        "Dividend yield de 6,2% — atrativo para investidor de renda",
+        "Upside de 11,8% vs consenso",
+        "Gestão mais eficiente que quando era estatal"
+      ],
+      bear: [
+        "RÚSSIA: dependia do diesel russo barato — agora escasso e mais caro",
+        "EUA competindo pelo diesel russo → custo de importação dispara",
+        "Mais exposta ao squeeze de margem que UGPA3 (menor diversificação)",
+        "Margem EBITDA de 4,2% deixa zero espaço para absorver choques de custo",
+        "Investigada por PF/ANP por práticas de preços abusivos"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 25, 80: 22, 100: 19, 120: 16 },
+          "Moderada": { 65: 23, 80: 20, 100: 18, 120: 15 },
+          "Total":    { 65: 21, 80: 18, 100: 16, 120: 13 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Moderada",
+        nota: "Modelo de distribuição pura — totalmente exposta ao spread Petrobras → bomba"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "NEUTRO", target: 21 },
+        { casa: "XP Investimentos", rec: "COMPRA", target: 24 }
+      ]
+    },
+
+    BRKM5: {
+      ticker: "BRKM5",
+      nome: "Braskem",
+      nomeCompleto: "Braskem S.A.",
+      tipo: "Petroquímica",
+      subsetor: "Petroquímica — Resinas termoplásticas",
+      icone: "⚗️",
+      preco: 11.20,
+      precoAlvoConsensus: 9.80,
+      precoAlvoMin: 6.00,
+      precoAlvoMax: 14.00,
+      pl: -8.2,   // prejuízo
+      pvp: 2.4,
+      dy: 0.0,
+      varYTD: -14.8,
+      var12m: -42.1,
+      ebitdaMargin: 8.5,
+      ebitdaUSD: 0.65,
+      lucroLiqUSD: -0.38,  // prejuízo
+      fcfUSD: -0.55,
+      dividaLiqUSD: 10.2,  // muito endividada
+      capexUSD: 0.72,
+      sensibilidadeBrent: -78,
+      riscoRegulatorio: 35,
+      tese: "Braskem é o caso mais bearish do setor no ambiente atual. A nafta — seu principal input, derivada do petróleo — responde por ~65% do custo de produção. Brent alto = custo explodindo. Ao mesmo tempo, a demanda global por resinas plásticas está fraca e o preço de venda não sobe na mesma velocidade que o custo. Resultado: margens esmagadas, prejuízo acumulado e dívida de US$10,2bi pesando. O escândalo geológico de Alagoas ainda carrega provisões relevantes.",
+      bull: [
+        "Monopólio virtual do setor petroquímico brasileiro — posição defensiva",
+        "Qualquer queda do Brent é um catalisador forte de recuperação",
+        "Reestruturação de dívida em andamento pode melhorar o perfil financeiro",
+        "Presença nos EUA e México diversifica receita"
+      ],
+      bear: [
+        "FCF negativo: –US$0,55bi — consome caixa sistematicamente",
+        "Dívida líquida de US$10,2bi com covenants sob pressão",
+        "Margem EBITDA de 8,5% deixa zero espaço para choques",
+        "Brent $100 é o pior cenário possível para o modelo de negócio",
+        "Provisões de Alagoas (subsidência) ainda não totalmente equacionadas",
+        "PETR4 analisa recompra da empresa — incerteza de M&A"
+      ],
+      cenarios: {
+        brentz: [65, 80, 100, 120],
+        intervencoes: ["Nenhuma", "Moderada", "Total"],
+        targets: {
+          "Nenhuma": { 65: 18, 80: 14, 100: 9, 120: 5 },
+          "Moderada": { 65: 18, 80: 14, 100: 9, 120: 5 },
+          "Total":    { 65: 18, 80: 14, 100: 9, 120: 5 }
+        },
+        brentAtual: 100,
+        intervencaoAtual: "Nenhuma",
+        nota: "Intervenção não afeta Braskem — mas Brent alto destrói margem diretamente via nafta"
+      },
+      recomendacoes: [
+        { casa: "BTG Pactual", rec: "VENDA", target: 8 },
+        { casa: "XP Investimentos", rec: "NEUTRO", target: 11 },
+        { casa: "Itaú BBA", rec: "VENDA", target: 7 }
+      ]
+    }
+
+  }, // /empresas
+
+  // ── HISTÓRICO FCF (para waterfall) ──────────────────────
+  fcfHistorico: {
+    PETR4: [
+      { ano: "2022", fcf: 23.3 }, { ano: "2023", fcf: 23.3 },
+      { ano: "2024", fcf: 23.3 }, { ano: "2025", fcf: 16.5 }
+    ],
+    PRIO3: [
+      { ano: "2022", fcf: 0.6 }, { ano: "2023", fcf: 0.9 },
+      { ano: "2024", fcf: 1.0 }, { ano: "2025", fcf: 1.1 }
+    ],
+    RECV3: [
+      { ano: "2022", fcf: 0.12 }, { ano: "2023", fcf: 0.18 },
+      { ano: "2024", fcf: 0.20 }, { ano: "2025", fcf: 0.22 }
+    ],
+    RAIZ4: [
+      { ano: "2022", fcf: 0.4 }, { ano: "2023", fcf: 0.1 },
+      { ano: "2024", fcf: -0.2 }, { ano: "2025", fcf: -0.3 }
+    ],
+    UGPA3: [
+      { ano: "2022", fcf: 0.28 }, { ano: "2023", fcf: 0.25 },
+      { ano: "2024", fcf: 0.22 }, { ano: "2025", fcf: 0.18 }
+    ],
+    VBBR3: [
+      { ano: "2022", fcf: 0.22 }, { ano: "2023", fcf: 0.20 },
+      { ano: "2024", fcf: 0.18 }, { ano: "2025", fcf: 0.14 }
+    ],
+    BRKM5: [
+      { ano: "2022", fcf: 0.8 }, { ano: "2023", fcf: -0.2 },
+      { ano: "2024", fcf: -0.4 }, { ano: "2025", fcf: -0.55 }
+    ]
+  },
+
+  // ── TESOURA DE MARGENS (diesel — dados mensais para gráfico) ──
+  tesoura: [
+    { l:"Jan/22", pb:3.61, pp:3.58 }, { l:"Mar/22", pb:4.06, pp:4.35 },
+    { l:"Jun/22", pb:4.89, pp:5.20 }, { l:"Set/22", pb:4.89, pp:4.72 },
+    { l:"Dez/22", pb:3.89, pp:3.68 }, { l:"Mar/23", pb:3.89, pp:3.52 },
+    { l:"Mai/23", pb:3.27, pp:3.42 }, { l:"Set/23", pb:3.27, pp:3.55 },
+    { l:"Dez/23", pb:3.27, pp:3.50 }, { l:"Mar/24", pb:3.27, pp:3.62 },
+    { l:"Jun/24", pb:3.27, pp:3.68 }, { l:"Set/24", pb:3.27, pp:3.72 },
+    { l:"Dez/24", pb:3.27, pp:3.75 }, { l:"Mar/25", pb:3.27, pp:3.82 },
+    { l:"Mai/25", pb:3.11, pp:3.65 }, { l:"Set/25", pb:3.11, pp:3.72 },
+    { l:"Dez/25", pb:3.11, pp:3.80 }, { l:"Jan/26", pb:3.11, pp:3.88 },
+    { l:"Mar/26", pb:3.49, pp:5.30 }
+  ],
+
+  // ── CATALISADORES SETORIAIS ──────────────────────────────
+  catalisadores: [
+    { nome:"Rússia proíbe gasolina (01/04)", prob:85, impacto:-22, tipo:"bear", nota:"Proibição confirmada — Brasil perde 50-74% do diesel importado da Rússia" },
+    { nome:"EUA competem pelo diesel russo", prob:90, impacto:-18, tipo:"bear", nota:"Sanções removidas em 12/03 — EUA disputam o mesmo produto que o Brasil" },
+    { nome:"Drones destroem refino russo", prob:75, impacto:-20, tipo:"bear", nota:"17% da cap. de refino russa destruída = menos diesel disponível no mundo" },
+    { nome:"Squeeze margens distribuidoras", prob:70, impacto:-12, tipo:"bear", nota:"VBBR3/UGPA3: custo sobe antes do repasse → margem negativa" },
+    { nome:"Nafta → BRKM5 destruição", prob:65, impacto:-35, tipo:"bear", nota:"Brent $100 + nafta cara = margem petroquímica esmagada" },
+    { nome:"Intervenção política preços", prob:55, impacto:-18, tipo:"bear", nota:"Eleições 2026 — governo pressiona por não repasse do Brent" },
+    { nome:"Ceasefire Oriente Médio", prob:30, impacto:-32, tipo:"bear", nota:"Se paz chegar, Brent despenca — E&P sofre, distribuidoras recuperam" },
+    { nome:"Brent $70 via OPEC", prob:22, impacto:-28, tipo:"bear", nota:"Recessão global ou acordo de produção OPEC+" },
+    { nome:"Escalada → Brent $130", prob:22, impacto:+28, tipo:"bull", nota:"Conflito se aprofunda — PRIO3 e RECV3 maiores beneficiadas" },
+    { nome:"Reajuste PETR4 aprovado", prob:25, impacto:+14, tipo:"bull", nota:"Governo cede — remove desconto do risco político" },
+    { nome:"Chuvas → Etanol RAIZ4", prob:40, impacto:+12, tipo:"bull", nota:"Boa safra 26/27 → etanol competitivo → RAIZ4 recupera FCF" },
+    { nome:"M&A: PETR4 recompra BRKM5", prob:18, impacto:+22, tipo:"bull", nota:"Negociação em andamento — pode gerar re-rating do setor" }
+  ]
+
+}; // /window.DADOS_SETOR
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --gold:#C8963A; --gold-light:#E8B55A; --gold-dim:rgba(200,150,58,.13);
+  --ink:#060B12; --ink-2:#0C1520; --ink-3:#131D2A; --ink-4:#1C2738; --surface:#1E2229;
+  --text:#E8E4DC; --text-dim:#7A8090;
+  --red:#C83838; --red-dim:rgba(200,56,56,.16);
+  --amber:#CC8020; --amber-dim:rgba(204,128,32,.16);
+  --green:#2E8A50; --green-dim:rgba(46,138,80,.16);
+  --blue:#3A82C0; --blue-dim:rgba(58,130,192,.16);
+  --diesel:#4A90D0; --gasoline:#C8963A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:14px}
+
+/* ══════════════════════════════════════════
+   WATERMARK PATTERN
+══════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(-45deg,transparent 0,transparent 90px,
+    rgba(200,150,58,.018) 90px,rgba(200,150,58,.018) 92px);
+}
+
+/* ══════════════════════════════════════════
+   CHROME LAYOUT
+══════════════════════════════════════════ */
+#chrome{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh}
+
+/* ── TOP BAR ── */
+#topbar{
+  height:50px;background:var(--ink-2);border-bottom:1px solid rgba(200,150,58,.28);
+  display:flex;align-items:center;gap:0;flex-shrink:0;
+}
+.brand{
+  display:flex;align-items:center;gap:9px;padding:0 20px;
+  border-right:1px solid var(--ink-4);height:100%;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.18em;
+}
+.b-os{font-weight:500;color:var(--gold)}
+.b-bar{width:2px;height:16px;background:var(--gold)}
+.b-cap{font-weight:300}
+
+/* ── NAV TABS ── */
+#nav{display:flex;height:100%;border-right:1px solid var(--ink-4)}
+.nav-btn{
+  background:none;border:none;border-bottom:2px solid transparent;
+  padding:0 22px;cursor:pointer;height:100%;
+  font-family:'Barlow Condensed';font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);
+  display:flex;align-items:center;gap:7px;white-space:nowrap;
+  transition:all .15s;border-right:1px solid var(--ink-4);
+}
+.nav-btn:hover{color:var(--text);background:var(--gold-dim)}
+.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--gold-dim)}
+.nav-icon{font-size:13px}
+
+/* ── BADGE ── */
+#alert-badge{
+  margin-left:auto;margin-right:16px;
+  background:var(--red-dim);border:1px solid var(--red);
+  color:var(--red);font-size:9px;font-weight:700;
+  padding:4px 10px;letter-spacing:.1em;border-radius:2px;
+  font-family:'DM Mono';animation:blink 1.8s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── PAGES ── */
+#pages{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;display:none;overflow:hidden}
+.page.active{display:flex;flex-direction:column}
+
+/* ── FOOTER ── */
+#footer{
+  height:30px;background:var(--ink-2);border-top:1px solid rgba(200,150,58,.18);
+  display:flex;align-items:center;justify-content:space-between;padding:0 18px;
+  flex-shrink:0;
+}
+.f-brand{font-family:'DM Mono';display:flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.16em}
+.f-os{font-weight:500;color:var(--gold)}
+.f-bar{width:2px;height:12px;background:var(--gold)}
+.f-src{font-size:8px;color:var(--text-dim);font-family:'DM Mono';letter-spacing:.04em}
+.f-date{font-size:9px;color:var(--text-dim);font-family:'DM Mono'}
+
+/* ══════════════════════════════════════════
+   PAGE 1 — DASHBOARD
+══════════════════════════════════════════ */
+#page-dash{overflow-y:auto}
+#dash-inner{max-width:1280px;margin:0 auto;padding:20px 24px 60px}
+
+/* section title */
+.sect{
+  font-family:'Bebas Neue';font-size:18px;letter-spacing:.08em;
+  color:var(--gold);margin:24px 0 12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sect::after{content:'';flex:1;height:1px;background:var(--ink-4)}
+
+/* sub-tabs */
+.stabs{display:flex;gap:0;border-bottom:1px solid var(--ink-4);margin-bottom:18px}
+.st{
+  background:none;border:none;cursor:pointer;
+  font-family:'Barlow Condensed';font-size:11px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text-dim);padding:8px 18px;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  white-space:nowrap;transition:all .18s;
+}
+.st:hover{color:var(--text)}
+.st.on{color:var(--gold);border-bottom-color:var(--gold)}
+.stpanel{display:none}.stpanel.on{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* grids */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.c2{grid-column:span 2}.c3{grid-column:span 3}
+@media(max-width:960px){.g4,.g3{grid-template-columns:1fr 1fr}.c3{grid-column:span 2}}
+@media(max-width:600px){.g4,.g3,.g2{grid-template-columns:1fr}.c2,.c3{grid-column:span 1}}
+
+/* card */
+.card{
+  background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px;
+  padding:16px;position:relative;overflow:hidden;
+}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);opacity:.4}
+.card.diesel::before{background:var(--diesel)}
+.card.gasoline::before{background:var(--gasoline)}
+.card.danger::before{background:var(--red)}
+.card.warning::before{background:var(--amber)}
+.card.safe::before{background:var(--green)}
+
+.clbl{font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;font-family:'DM Mono'}
+.cval{font-family:'Bebas Neue';font-size:34px;line-height:1;color:var(--text);letter-spacing:.02em}
+.cunit{font-size:13px;color:var(--text-dim);margin-left:3px}
+.csub{font-size:11px;color:var(--text-dim);margin-top:5px}
+.cdelta{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 7px;border-radius:2px;margin-top:7px}
+.dup{background:var(--green-dim);color:var(--green)}
+.ddown{background:var(--red-dim);color:var(--red)}
+.dwarn{background:var(--amber-dim);color:var(--amber)}
+
+/* bar chart */
+.bars{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+.brow{display:flex;align-items:center;gap:9px}
+.blbl{font-size:11px;color:var(--text-dim);width:88px;flex-shrink:0;text-align:right;font-family:'DM Mono'}
+.btrack{flex:1;height:20px;background:var(--ink-4);border-radius:2px;overflow:hidden}
+.bfill{height:100%;border-radius:2px;display:flex;align-items:center;justify-content:flex-end;padding-right:7px;font-size:10px;font-weight:700;color:var(--ink);transition:width .8s cubic-bezier(.16,1,.3,1)}
+
+/* risk bar */
+.rbar{height:8px;border-radius:4px;background:var(--ink-4);margin:8px 0;overflow:hidden}
+.rfill{height:100%;border-radius:4px;transition:width .8s ease}
+.rlbls{display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);font-family:'DM Mono'}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--ink-4);padding:7px 9px;text-align:left;font-family:'DM Mono'}
+td{padding:8px 9px;border-bottom:1px solid rgba(255,255,255,.035);color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--ink-3)}
+.tv{font-family:'DM Mono';font-size:11px}
+.tbadge{font-size:9px;padding:2px 7px;border-radius:2px;font-weight:700;font-family:'DM Mono'}
+
+/* alert boxes */
+.abox{border-left:3px solid var(--red);background:var(--red-dim);padding:12px 14px;border-radius:0 3px 3px 0;margin-bottom:10px}
+.abox.warn{border-left-color:var(--amber);background:var(--amber-dim)}
+.abox.info{border-left-color:var(--blue);background:var(--blue-dim)}
+.atitle{font-weight:700;font-size:12px;letter-spacing:.04em;margin-bottom:3px}
+.atext{font-size:11px;color:var(--text-dim);line-height:1.5}
+
+/* score */
+.scorerow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.scorecard{background:var(--ink-3);border-radius:3px;padding:12px;text-align:center}
+.scorenum{font-family:'Bebas Neue';font-size:40px;line-height:1}
+.scorelbl{font-size:10px;color:var(--text-dim);letter-spacing:.1em;margin-top:2px}
+
+.sep{height:1px;background:var(--ink-4);margin:14px 0}
+.note{font-size:10px;color:var(--text-dim);font-family:'DM Mono';margin-top:8px;line-height:1.5}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-top:8px}
+.ref-card{background:var(--ink-3);border-radius:3px;padding:11px;border-top:2px solid var(--ink-4)}
+.ref-card.pb{border-top-color:var(--gold)}
+.ref-card.priv{border-top-color:var(--blue)}
+.ref-name{font-size:11px;font-weight:700}
+.ref-state{font-size:9px;color:var(--text-dim);font-family:'DM Mono'}
+.ref-cap{font-family:'Bebas Neue';font-size:18px;color:var(--gold);margin-top:3px}
+.ref-unit{font-size:9px;color:var(--text-dim)}
+
+/* ══════════════════════════════════════════
+   PAGE 3 — SECTOR INVESTMENT ANALYSIS
+══════════════════════════════════════════ */
+#page-inv{ overflow-y:auto }
+#inv-inner{ max-width:1360px;margin:0 auto;padding:14px 22px 60px }
+.inv-disc{ background:rgba(200,150,58,.08);border:1px solid rgba(200,150,58,.2);border-radius:3px;padding:7px 14px;font-size:9px;color:var(--text-dim);font-family:'DM Mono';margin-bottom:12px }
+.inv-card{ background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px }
+.inv-g2{ display:grid;grid-template-columns:1fr 1fr;gap:12px }
+.inv-g3{ display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px }
+@media(max-width:900px){ .inv-g2,.inv-g3{ grid-template-columns:1fr 1fr } }
+@media(max-width:580px){ .inv-g2,.inv-g3{ grid-template-columns:1fr } }
+.sect-note{ font-family:'Barlow Condensed';font-size:10px;font-weight:400;color:var(--text-dim);letter-spacing:.03em;margin-left:10px;text-transform:none }
+
+/* Data banner */
+.data-banner{ display:flex;align-items:center;gap:0;background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px;margin-bottom:12px;overflow:hidden }
+.db-item{ padding:8px 16px;border-right:1px solid var(--ink-4);flex-shrink:0 }
+.db-item:last-child{ border-right:none }
+.db-lbl{ font-size:8px;font-weight:700;letter-spacing:.15em;color:var(--text-dim);font-family:'DM Mono' }
+.db-val{ font-family:'Bebas Neue';font-size:20px;line-height:1.1;color:var(--text) }
+.db-update{ margin-left:auto;padding:8px 14px;font-size:9px;color:var(--text-dim);font-family:'DM Mono' }
+
+/* Company selector */
+.co-tabs{ display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px }
+.co-btn{ background:var(--ink-3);border:1px solid var(--ink-4);border-radius:3px;padding:6px 12px;cursor:pointer;font-family:'Barlow Condensed';font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--text-dim);transition:all .15s;white-space:nowrap }
+.co-btn:hover{ background:var(--gold-dim);color:var(--text) }
+.co-btn.active{ background:var(--gold-dim);border-color:var(--gold);color:var(--gold) }
+
+/* Company KPIs */
+.co-kpis{ display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:12px }
+.co-kpi{ background:var(--ink-3);border-radius:3px;padding:10px 12px;position:relative;overflow:hidden }
+.co-kpi::before{ content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);opacity:.4 }
+.co-kpi.red::before{ background:var(--red) }
+.co-kpi.grn::before{ background:var(--green) }
+.co-kpi.amb::before{ background:var(--amber) }
+.ck-l{ font-size:8px;font-weight:700;letter-spacing:.14em;color:var(--text-dim);font-family:'DM Mono';margin-bottom:3px }
+.ck-v{ font-family:'Bebas Neue';font-size:22px;line-height:1 }
+.ck-s{ font-size:8px;color:var(--text-dim);margin-top:2px;font-family:'DM Mono' }
+@media(max-width:900px){ .co-kpis{ grid-template-columns:repeat(4,1fr) } }
+
+/* Bull/Bear cards */
+.thesis-grid{ display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px }
+.thesis-card{ padding:14px 16px;border-radius:4px;font-size:12px;line-height:1.75 }
+.tc-title{ font-weight:700;font-size:12px;letter-spacing:.04em;margin-bottom:8px }
+.tc-item{ display:flex;gap:7px }
+.tc-dot{ flex-shrink:0;margin-top:4px }
+
+/* Sector quadrant */
+#quad-canvas{ display:block }
+
+/* Sector comparison table */
+.sec-tbl{ width:100%;border-collapse:collapse;font-size:11px }
+.sec-tbl th{ font-size:8px;font-weight:700;letter-spacing:.13em;color:var(--text-dim);border-bottom:1px solid var(--ink-4);padding:7px 10px;text-align:left;font-family:'DM Mono';background:var(--ink-3) }
+.sec-tbl td{ padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.035) }
+.sec-tbl tr:last-child td{ border-bottom:none }
+.sec-tbl tr:hover td{ background:var(--ink-3) }
+.tmv{ font-family:'DM Mono';font-size:10px }
+.tbdg{ font-size:8px;padding:2px 6px;border-radius:2px;font-weight:700;font-family:'DM Mono';white-space:nowrap }
+.tco{ font-weight:700;font-size:11px }
+
+/* Scenario matrix */
+.matz-wrap{ overflow-x:auto }
+.matz{ border-collapse:collapse;width:100% }
+.matz th{ font-family:'DM Mono';font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--text-dim);padding:7px 8px;text-align:center;background:var(--ink-3) }
+.matz td{ padding:10px 8px;text-align:center;font-family:'Bebas Neue';font-size:18px;border:1px solid var(--ink-4);cursor:default;transition:filter .15s }
+.matz td:hover{ filter:brightness(1.2) }
+.matz td.cur{ box-shadow:inset 0 0 0 2px var(--gold) }
+.matz-d{ display:block;font-size:9px;font-family:'DM Mono';font-weight:700;margin-top:1px }
+.matz-c{ display:block;font-size:8px;font-family:'DM Mono';color:var(--gold);margin-top:1px }
+
+/* Recommendation row */
+.rec-row{ display:flex;gap:8px;flex-wrap:wrap;margin-top:8px }
+.rec-pill{ font-size:9px;padding:3px 9px;border-radius:2px;font-family:'DM Mono';font-weight:700 }
+
+/* Catalyst list */
+.cat-item{ display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04) }
+.cat-item:last-child{ border-bottom:none }
+.cat-dot{ width:7px;height:7px;border-radius:50%;flex-shrink:0 }
+.cat-bw{ width:55px;height:3px;background:var(--ink-4);border-radius:2px;overflow:hidden }
+.cat-bf{ height:100%;border-radius:2px }
+
+/* Tesoura */
+#c-tesoura{ display:block }
+
+#page-map{flex-direction:row}
+#map-wrap{flex:1;position:relative;overflow:hidden}
+svg#gmap{width:100%;height:100%}
+
+/* map panels */
+.mpanel{
+  position:absolute;background:rgba(12,21,32,.93);
+  border:1px solid var(--ink-4);border-radius:3px;
+  backdrop-filter:blur(10px);z-index:50;
+}
+#mp-left{top:12px;left:12px;width:228px}
+#mp-right{top:12px;right:12px;width:206px}
+
+.mphdr{padding:8px 12px;border-bottom:1px solid var(--ink-4);font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--gold);font-family:'DM Mono'}
+.ftabs{display:flex;border-bottom:1px solid var(--ink-4)}
+.ft{flex:1;padding:6px 0;background:none;border:none;cursor:pointer;font-family:'Barlow Condensed';font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);border-right:1px solid var(--ink-4);transition:all .15s}
+.ft:last-child{border-right:none}
+.ft.on{background:var(--gold-dim);color:var(--gold)}
+
+.ri{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .12s}
+.ri:last-child{border-bottom:none}
+.ri:hover,.ri.hl{background:var(--ink-3)}
+.ri-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ri-info{flex:1;min-width:0}
+.ri-name{font-size:11px;font-weight:600}
+.ri-sub{font-family:'DM Mono';font-size:8px;color:var(--text-dim);margin-top:1px}
+.ri-badge{font-size:7px;font-weight:700;letter-spacing:.1em;padding:2px 5px;border-radius:2px;white-space:nowrap;font-family:'DM Mono'}
+
+.ci{padding:7px 12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.ci:last-child{border-bottom:none}
+.ci-name{font-size:11px;font-weight:600}
+.ci-badge{font-size:8px;font-weight:700;letter-spacing:.1em;padding:2px 5px;border-radius:2px;margin-top:3px;display:inline-block;font-family:'DM Mono'}
+.ci-detail{font-size:9px;color:var(--text-dim);margin-top:3px;line-height:1.4}
+
+/* tooltip */
+#mtt{
+  position:absolute;background:rgba(8,15,24,.97);border:1px solid var(--gold);border-radius:3px;
+  padding:12px;width:248px;pointer-events:none;z-index:200;display:none;backdrop-filter:blur(10px);
+}
+.mtt-title{font-family:'Bebas Neue';font-size:16px;letter-spacing:.05em;margin-bottom:6px}
+.mtt-row{display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px}
+.mtt-lbl{color:var(--text-dim)}.mtt-val{font-family:'DM Mono';font-size:9px;text-align:right;max-width:130px}
+.mtt-sep{height:1px;background:var(--ink-4);margin:6px 0}
+.mtt-desc{font-size:9px;color:var(--text-dim);line-height:1.5}
+.mtt-chokes{margin-top:5px;display:flex;flex-wrap:wrap;gap:3px}
+.mtt-ck{font-size:7px;padding:2px 5px;border-radius:2px;font-family:'DM Mono';font-weight:700}
+
+/* map legend */
+#mlegend{
+  position:absolute;bottom:12px;left:12px;
+  background:rgba(12,21,32,.9);border:1px solid var(--ink-4);border-radius:3px;
+  padding:7px 11px;z-index:50;backdrop-filter:blur(8px);
+}
+.ll{display:flex;align-items:center;gap:7px;font-size:8px;color:var(--text-dim);margin-bottom:3px}
+.ll:last-child{margin-bottom:0}
+.ll-line{height:2px;width:22px;border-radius:1px}
+.ll-dot{width:7px;height:7px;border-radius:50%}
+
+/* svg classes */
+.sphere{fill:var(--ink)}
+.graticule{fill:none;stroke:rgba(255,255,255,.025);stroke-width:.35}
+.land{fill:var(--ink-3);stroke:var(--ink-4);stroke-width:.4}
+.land.brazil{fill:#122218;stroke:#2E8A50;stroke-width:1.1}
+.rt-base{fill:none;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s,stroke-width .2s}
+.rt-anim{fill:none;stroke-linecap:round;stroke-dasharray:10 7;pointer-events:none}
+.rt-anim.sc{animation:flow .9s linear infinite}
+.rt-anim.sh{animation:flow 1.3s linear infinite}
+.rt-anim.sm{animation:flow 1.8s linear infinite}
+.rt-anim.sl{animation:flow 2.5s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-34}}
+.ck-pulse{fill:none;stroke-width:1.2;transform-box:fill-box;transform-origin:center}
+.ck-pulse.blocked{stroke:var(--red);animation:pulse .9s ease-out infinite}
+.ck-pulse.watch{stroke:var(--amber);animation:pulse 1.8s ease-out infinite}
+.ck-pulse.ok{stroke:var(--green);animation:pulse 3s ease-out infinite}
+.ck-pulse.alt{stroke:var(--blue);animation:pulse 2.5s ease-out infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(5);opacity:0}}
+.br-ring{fill:none;stroke:var(--gold);transform-box:fill-box;transform-origin:center;animation:br-glow 2.2s ease-in-out infinite}
+@keyframes br-glow{0%,100%{transform:scale(1);opacity:.2}50%{transform:scale(1.6);opacity:.55}}
+
+#mloading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--ink);z-index:400;flex-direction:column;gap:12px}
+.ld-txt{font-family:'Bebas Neue';font-size:18px;letter-spacing:.12em;color:var(--gold)}
+.ld-bar{width:160px;height:1.5px;background:var(--ink-4);border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;background:var(--gold);animation:lda 1.5s ease-in-out infinite}
+@keyframes lda{0%{width:0;margin-left:0}50%{width:100%;margin-left:0}100%{width:0;margin-left:100%}}
+#page-map::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.035) 2px,rgba(0,0,0,.035) 4px)}
+
+/* ══ GLOBAL PRICE BAR ══════════════════════════════════ */
+#price-bar{
+  height:42px;background:var(--ink-2);
+  border-bottom:1px solid var(--ink-4);
+  display:flex;align-items:center;gap:0;
+  flex-shrink:0;overflow:hidden;z-index:99;position:relative;
+}
+.pb-cell{
+  display:flex;align-items:center;gap:9px;
+  padding:0 16px;height:100%;border-right:1px solid var(--ink-4);
+  flex-shrink:0;
+}
+.pb-lbl{font-size:8px;font-weight:700;letter-spacing:.16em;color:var(--text-dim);font-family:'DM Mono'}
+.pb-input-wrap{display:flex;align-items:center;gap:4px}
+.pb-btn{background:var(--ink-4);border:none;color:var(--text-dim);width:18px;height:18px;border-radius:2px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0}
+.pb-btn:hover{background:var(--gold-dim);color:var(--gold)}
+input.pb-num{background:none;border:none;color:var(--text);font-family:'Bebas Neue';font-size:18px;width:68px;text-align:center;outline:none;cursor:pointer}
+input.pb-num:focus{color:var(--gold)}
+.pb-unit{font-size:9px;color:var(--text-dim);font-family:'DM Mono';flex-shrink:0}
+.pb-delta{font-size:9px;font-family:'DM Mono';font-weight:700;padding:2px 6px;border-radius:2px;flex-shrink:0;min-width:46px;text-align:center}
+.pb-sep{width:1px;height:20px;background:var(--ink-4);flex-shrink:0}
+.pb-scenario{
+  margin:0 12px;padding:4px 12px;border-radius:2px;
+  font-size:9px;font-weight:700;letter-spacing:.1em;
+  font-family:'DM Mono';white-space:nowrap;
+}
+.pb-presets{display:flex;gap:5px;padding:0 12px;align-items:center}
+.pb-preset{background:var(--ink-3);border:1px solid var(--ink-4);color:var(--text-dim);font-size:8px;font-family:'DM Mono';padding:3px 8px;border-radius:2px;cursor:pointer;white-space:nowrap;transition:all .12s}
+.pb-preset:hover{border-color:var(--gold);color:var(--gold)}
+.pb-preset.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
+.pb-lbl-wrap{display:flex;flex-direction:column;gap:0}
+</style>
+</head>
+<body>
+<div id="chrome">
+
+  <!-- ── TOP BAR ── -->
+  <div id="topbar">
+    <div class="brand">
+      <span class="b-os">OS</span><div class="b-bar"></div><span class="b-cap">CAPITAL</span>
+    </div>
+    <div id="nav">
+      <button class="nav-btn active" data-page="dash" onclick="setPage('dash',this)">
+        <span class="nav-icon">📊</span> OFERTA &amp; DEMANDA
+      </button>
+      <button class="nav-btn" data-page="map" onclick="setPage('map',this)">
+        <span class="nav-icon">🗺️</span> GEOPOLÍTICA DO PETRÓLEO
+      </button>
+      <button class="nav-btn" data-page="inv" onclick="setPage('inv',this)">
+        <span class="nav-icon">📈</span> EMPRESAS — EFEITO
+      </button>
+      <button class="nav-btn" data-page="sim" onclick="setPage('sim',this)">
+        <span class="nav-icon">⚠️</span> SIMULADOR DE CHOQUE
+      </button>
+    </div>
+    <div id="alert-badge">⊘ HORMUZ BLOQUEADO · MAR/2026</div>
+  </div>
+  <!-- ══ GLOBAL PRICE BAR ══════════════════════════════ -->
+  <div id="price-bar">
+    <!-- Brent -->
+    <div class="pb-cell">
+      <div class="pb-lbl-wrap">
+        <div class="pb-lbl">BRENT</div>
+        <div class="pb-lbl" style="color:rgba(122,128,144,.5);font-size:7px">USD/BBL</div>
+      </div>
+      <div class="pb-input-wrap">
+        <button class="pb-btn" onclick="adjPreco('brent',-1)">−</button>
+        <input class="pb-num" id="pb-brent" type="number" value="100.9" step="0.5" min="30" max="200" oninput="onPrecoChange()">
+        <button class="pb-btn" onclick="adjPreco('brent',+1)">+</button>
+      </div>
+      <div class="pb-delta" id="pb-brent-delta"></div>
+    </div>
+    <div class="pb-sep"></div>
+    <!-- Dollar -->
+    <div class="pb-cell">
+      <div class="pb-lbl-wrap">
+        <div class="pb-lbl">DÓLAR</div>
+        <div class="pb-lbl" style="color:rgba(122,128,144,.5);font-size:7px">BRL/USD</div>
+      </div>
+      <div class="pb-input-wrap">
+        <button class="pb-btn" onclick="adjPreco('cambio',-0.05)">−</button>
+        <input class="pb-num" id="pb-cambio" type="number" value="5.72" step="0.05" min="3" max="12" oninput="onPrecoChange()">
+        <button class="pb-btn" onclick="adjPreco('cambio',+0.05)">+</button>
+      </div>
+      <div class="pb-delta" id="pb-cambio-delta"></div>
+    </div>
+    <!-- Scenario pill -->
+    <div class="pb-scenario" id="pb-scenario"></div>
+    <!-- Presets -->
+    <div class="pb-presets">
+      <span style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-right:2px">CENÁRIOS:</span>
+      <button class="pb-preset" onclick="setPreco(63,6.19,'pre')">Início 2026<br>$63 · R$6,19</button>
+      <button class="pb-preset active" onclick="setPreco(100.9,5.72,'hoje')">Hoje (28/03)<br>$100,9 · R$5,72</button>
+      <button class="pb-preset" onclick="setPreco(75,5.50,'base')">Base (paz)<br>$75 · R$5,50</button>
+      <button class="pb-preset" onclick="setPreco(130,6.50,'crise')">Crise máxima<br>$130 · R$6,50</button>
+    </div>
+    <!-- Paridade indicator -->
+    <div style="margin-left:auto;padding:0 16px;text-align:right;flex-shrink:0">
+      <div style="font-size:8px;color:var(--text-dim);font-family:'DM Mono'">PARIDADE DIESEL (PPI)</div>
+      <div style="font-family:'Bebas Neue';font-size:16px;color:var(--red)" id="pb-parity">R$—/L</div>
+      <div style="font-size:8px;font-family:'DM Mono';font-weight:700" id="pb-defasagem"></div>
+    </div>
+  </div>
+
+  <!-- ── PAGES ── -->
+  <div id="pages">
+
+    <!-- ══════════════════════════════════════════
+         PAGE 1 — DASHBOARD
+    ══════════════════════════════════════════ -->
+    <div class="page active" id="page-dash">
+      <div id="dash-inner">
+
+        <!-- sub tabs -->
+        <div class="stabs">
+          <button class="st on" onclick="setSt('st-ov',this)">Painel Geral</button>
+          <button class="st" onclick="setSt('st-of',this)">Oferta</button>
+          <button class="st" onclick="setSt('st-dem',this)">Demanda</button>
+          <button class="st" onclick="setSt('st-log',this)">Cadeia Logística</button>
+          <button class="st" onclick="setSt('st-risk',this)">Mapa de Risco</button>
+        </div>
+
+        <!-- ── PAINEL GERAL ── -->
+        <div class="stpanel on" id="st-ov">
+          <div class="sect">KPIs — CONJUNTURA ATUAL</div>
+          <div class="g4">
+            <div class="card diesel"><div class="clbl">Consumo Diesel B — 2025</div><div class="cval">66,7<span class="cunit">bi L</span></div><div class="csub">Projeção anual (StoneX / ANP)</div><div class="cdelta dup">▲ +3% vs 2024</div></div>
+            <div class="card gasoline"><div class="clbl">Consumo Gasolina C — 2025</div><div class="cval">46,5<span class="cunit">bi L</span></div><div class="csub">Recorde histórico projetado</div><div class="cdelta dup">▲ +4,9% vs 2024</div></div>
+            <div class="card danger"><div class="clbl">Preço Diesel — Mar/2026</div><div class="cval">R$6,80<span class="cunit">/L</span></div><div class="csub">Até R$ 8,00 no Centro-Oeste</div><div class="cdelta ddown">▲ +18,86% desde fev/26</div></div>
+            <div class="card warning"><div class="clbl">Utilização Refinarias Petrobras</div><div class="cval">93,2<span class="cunit">%</span></div><div class="csub">FUT 2024 — histórico máximo</div><div class="cdelta dup">▲ vs 88% em 2022</div></div>
+          </div>
+          <div class="sect">DEPENDÊNCIA EXTERNA</div>
+          <div class="g2">
+            <div class="card"><div class="clbl">Importação Líquida — Diesel</div>
+              <div class="bars">
+                <div class="brow"><div class="blbl">Produção nacional</div><div class="btrack"><div class="bfill" style="width:78%;background:var(--diesel)">78%</div></div></div>
+                <div class="brow"><div class="blbl">Importação</div><div class="btrack"><div class="bfill" style="width:22%;background:var(--red);color:#fff">22%</div></div></div>
+              </div>
+              <p class="note">~50% do diesel importado vem da Rússia. 22% da Arábia Saudita (afetada pelo Hormuz). Vulnerabilidade estrutural mantida.</p>
+            </div>
+            <div class="card"><div class="clbl">Importação Líquida — Gasolina</div>
+              <div class="bars">
+                <div class="brow"><div class="blbl">Produção nacional</div><div class="btrack"><div class="bfill" style="width:90%;background:var(--gasoline)">90%</div></div></div>
+                <div class="brow"><div class="blbl">Importação</div><div class="btrack"><div class="bfill" style="width:10%;background:var(--amber);color:#fff">10%</div></div></div>
+              </div>
+              <p class="note">Produção de gasolina cresceu 9,3% entre 2023–2025. Petrobras atingiu média de 419 kbpd. Dependência reduzida.</p>
+            </div>
+          </div>
+          <div class="sect">TERMÔMETRO DE ESCASSEZ</div>
+          <div class="g3">
+            <div class="card danger"><div class="clbl">Risco Logístico — Distribuição</div><div class="rbar"><div class="rfill" style="width:82%;background:linear-gradient(90deg,var(--amber),var(--red))"></div></div><div class="rlbls"><span>Baixo</span><span>Moderado</span><span>Crítico</span></div><p class="note" style="margin-top:6px">Ameaça de greve ativa. Diesel +18,86%. Safra em escoamento.</p></div>
+            <div class="card warning"><div class="clbl">Risco Abastecimento — Diesel</div><div class="rbar"><div class="rfill" style="width:65%;background:linear-gradient(90deg,var(--green),var(--amber))"></div></div><div class="rlbls"><span>Baixo</span><span>Moderado</span><span>Crítico</span></div><p class="note" style="margin-top:6px">Estoques dentro do padrão ANP, mas 3+ dias de bloqueio esgota postos regionais.</p></div>
+            <div class="card safe"><div class="clbl">Risco Abastecimento — Gasolina</div><div class="rbar"><div class="rfill" style="width:30%;background:linear-gradient(90deg,var(--green),var(--green-dim))"></div></div><div class="rlbls"><span>Baixo</span><span>Moderado</span><span>Crítico</span></div><p class="note" style="margin-top:6px">Produção cobre ~90% da demanda. Risco secundário.</p></div>
+          </div>
+        </div>
+
+        <!-- ── OFERTA ── -->
+        <div class="stpanel" id="st-of">
+          <div class="sect">PRODUÇÃO — PETROBRAS 2023–2025</div>
+          <div class="g4">
+            <div class="card diesel"><div class="clbl">Diesel S-10 — Média</div><div class="cval">452<span class="cunit">kbpd</span></div><div class="csub">Máximo histórico</div><div class="cdelta dup">▲ +3,1%</div></div>
+            <div class="card gasoline"><div class="clbl">Gasolina A — Média</div><div class="cval">419<span class="cunit">kbpd</span></div><div class="csub">Máximo histórico</div><div class="cdelta dup">▲ +9,3%</div></div>
+            <div class="card"><div class="clbl">Capacidade Brasil</div><div class="cval">2,3<span class="cunit">M bpd</span></div><div class="csub">8º maior parque do mundo</div><div class="cdelta dwarn">Déficit: 600 kbpd</div></div>
+            <div class="card"><div class="clbl">FUT Médio — 2024</div><div class="cval">93,2<span class="cunit">%</span></div><div class="csub">Refinarias Petrobras</div><div class="cdelta dup">▲ +5,2pp vs 2022</div></div>
+          </div>
+          <div class="sect">PRINCIPAIS REFINARIAS</div>
+          <div class="ref-grid">
+            <div class="ref-card pb"><div class="ref-name">REPLAN</div><div class="ref-state">Paulínia — SP</div><div class="ref-cap">434</div><div class="ref-unit">mil bpd · maior do Brasil</div></div>
+            <div class="ref-card priv"><div class="ref-name">ACELEN (ex-RLAM)</div><div class="ref-state">Mataripe — BA</div><div class="ref-cap">377</div><div class="ref-unit">mil bpd · privada</div></div>
+            <div class="ref-card pb"><div class="ref-name">REDUC</div><div class="ref-state">Duque de Caxias — RJ</div><div class="ref-cap">239</div><div class="ref-unit">mil bpd</div></div>
+            <div class="ref-card pb"><div class="ref-name">REPAR</div><div class="ref-state">Araucária — PR</div><div class="ref-cap">207</div><div class="ref-unit">mil bpd</div></div>
+            <div class="ref-card pb"><div class="ref-name">REFAP</div><div class="ref-state">Canoas — RS</div><div class="ref-cap">201</div><div class="ref-unit">mil bpd · recorde 4T25</div></div>
+            <div class="ref-card pb"><div class="ref-name">REGAP</div><div class="ref-state">Betim — MG</div><div class="ref-cap">151</div><div class="ref-unit">mil bpd</div></div>
+            <div class="ref-card pb"><div class="ref-name">RNEST</div><div class="ref-state">Ipojuca — PE</div><div class="ref-cap">130</div><div class="ref-unit">mil bpd · Trem 2 → 260 (2029)</div></div>
+            <div class="ref-card priv"><div class="ref-name">REMAN (Atem)</div><div class="ref-state">Manaus — AM</div><div class="ref-cap">46</div><div class="ref-unit">mil bpd · opera a 20% ⚠</div></div>
+          </div>
+        </div>
+
+        <!-- ── DEMANDA ── -->
+        <div class="stpanel" id="st-dem">
+          <div class="sect">CONSUMO ANUAL</div>
+          <div class="g2">
+            <div class="card diesel"><div class="clbl">Diesel B — Volume (bi L)</div>
+              <div class="bars">
+                <div class="brow"><div class="blbl">2022</div><div class="btrack"><div class="bfill" style="width:60%;background:var(--diesel)">~63</div></div></div>
+                <div class="brow"><div class="blbl">2023</div><div class="btrack"><div class="bfill" style="width:63%;background:var(--diesel)">~65</div></div></div>
+                <div class="brow"><div class="blbl">2024</div><div class="btrack"><div class="bfill" style="width:65%;background:var(--diesel)">~65,4</div></div></div>
+                <div class="brow"><div class="blbl">2025 (proj.)</div><div class="btrack"><div class="bfill" style="width:68%;background:var(--diesel)">66,7 ★</div></div></div>
+              </div>
+            </div>
+            <div class="card gasoline"><div class="clbl">Gasolina C — Volume (bi L)</div>
+              <div class="bars">
+                <div class="brow"><div class="blbl">2022</div><div class="btrack"><div class="bfill" style="width:50%;background:var(--gasoline)">~38</div></div></div>
+                <div class="brow"><div class="blbl">2023</div><div class="btrack"><div class="bfill" style="width:55%;background:var(--gasoline)">~40</div></div></div>
+                <div class="brow"><div class="blbl">2024</div><div class="btrack"><div class="bfill" style="width:62%;background:var(--gasoline)">~44,3</div></div></div>
+                <div class="brow"><div class="blbl">2025 (proj.)</div><div class="btrack"><div class="bfill" style="width:68%;background:var(--gasoline)">46,5 ★</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="sect">VETORES DE DEMANDA</div>
+          <div class="card"><table>
+            <thead><tr><th>Setor</th><th>Combustível</th><th>Participação</th><th>Tendência 2026</th><th>Fator-chave</th></tr></thead>
+            <tbody>
+              <tr><td>Agropecuária</td><td><span class="dot" style="background:var(--diesel)"></span> Diesel</td><td class="tv">~35%</td><td><span class="tbadge" style="background:var(--green-dim);color:var(--green)">▲ ALTA</span></td><td>Safra soja 182 Mt</td></tr>
+              <tr><td>Transporte Rodoviário</td><td><span class="dot" style="background:var(--diesel)"></span> Diesel</td><td class="tv">~40%</td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">→ ESTÁVEL</span></td><td>ABCR +5,2%</td></tr>
+              <tr><td>Veículos flex</td><td><span class="dot" style="background:var(--gasoline)"></span> Gasolina</td><td class="tv">~65%</td><td><span class="tbadge" style="background:var(--green-dim);color:var(--green)">▲ ALTA</span></td><td>E30 + frota crescente</td></tr>
+              <tr><td>Região Norte</td><td><span class="dot" style="background:var(--diesel)"></span> Diesel + Gasolina</td><td class="tv">Alta dependência</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">⚠ RISCO</span></td><td>Reman opera a 20%</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <!-- ── LOGÍSTICA ── -->
+        <div class="stpanel" id="st-log">
+          <div class="sect">CADEIA DE ABASTECIMENTO</div>
+          <div style="display:flex;align-items:stretch;background:var(--ink-3);border-radius:4px;overflow:hidden;gap:0">
+            <div style="flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--ink-4)"><div style="font-size:20px;margin-bottom:5px">🛢️</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">PRÉ-SAL</div><div style="font-size:8px;color:var(--green);margin-top:3px;padding:2px 6px;background:var(--green-dim);border-radius:2px;font-family:'DM Mono'">70% DO CRU</div></div>
+            <div style="display:flex;align-items:center;padding:0 3px;color:var(--text-dim);font-size:13px;background:var(--ink-3)">→</div>
+            <div style="flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--ink-4)"><div style="font-size:20px;margin-bottom:5px">🏭</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">REFINO</div><div style="font-size:8px;color:var(--green);margin-top:3px;padding:2px 6px;background:var(--green-dim);border-radius:2px;font-family:'DM Mono'">FUT 93,2%</div></div>
+            <div style="display:flex;align-items:center;padding:0 3px;color:var(--text-dim);font-size:13px;background:var(--ink-3)">→</div>
+            <div style="flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--ink-4)"><div style="font-size:20px;margin-bottom:5px">🚢</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">IMPORTAÇÃO</div><div style="font-size:8px;color:var(--amber);margin-top:3px;padding:2px 6px;background:var(--amber-dim);border-radius:2px;font-family:'DM Mono'">22% DIESEL</div></div>
+            <div style="display:flex;align-items:center;padding:0 3px;color:var(--text-dim);font-size:13px;background:var(--ink-3)">→</div>
+            <div style="flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--ink-4)"><div style="font-size:20px;margin-bottom:5px">🔄</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">DISTRIBUIDORAS</div><div style="font-size:8px;color:var(--amber);margin-top:3px;padding:2px 6px;background:var(--amber-dim);border-radius:2px;font-family:'DM Mono'">MERCADO LIVRE</div></div>
+            <div style="display:flex;align-items:center;padding:0 3px;color:var(--text-dim);font-size:13px;background:var(--ink-3)">→</div>
+            <div style="flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--ink-4)"><div style="font-size:20px;margin-bottom:5px">🚛</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">TRANSPORTE</div><div style="font-size:8px;color:var(--red);margin-top:3px;padding:2px 6px;background:var(--red-dim);border-radius:2px;font-family:'DM Mono'">⚠ GREVE</div></div>
+            <div style="display:flex;align-items:center;padding:0 3px;color:var(--text-dim);font-size:13px;background:var(--ink-3)">→</div>
+            <div style="flex:1;padding:14px 10px;text-align:center"><div style="font-size:20px;margin-bottom:5px">⛽</div><div style="font-size:10px;font-weight:700;letter-spacing:.08em">POSTOS</div><div style="font-size:8px;color:var(--amber);margin-top:3px;padding:2px 6px;background:var(--amber-dim);border-radius:2px;font-family:'DM Mono'">ESTOQUE 10d</div></div>
+          </div>
+          <div class="sect">CENÁRIO DE GREVE — IMPACTO (MAR/2026)</div>
+          <div class="g2">
+            <div>
+              <div class="abox"><div class="atitle">🔴 Diesel +18,86% — Gatilho Ativo</div><div class="atext">Petrobras reajustou R$ 0,38/L em março/26. Conflito Oriente Médio (Hormuz) elevou o Brent acima de US$ 100. Diesel médio: R$ 6,80/L; até R$ 8,00 no Centro-Oeste.</div></div>
+              <div class="abox warn"><div class="atitle">🟡 Governo Federal</div><div class="atext">Decreto 12.875/2026: zera PIS/Cofins. MP de subvenção prevê redução de R$ 0,64/L na refinaria. Caminhoneiros denunciam que benefícios não chegam às bombas.</div></div>
+              <div class="abox info"><div class="atitle">🔵 Status: Risco Elevado (28/03/2026)</div><div class="atext">AGU com decisão judicial anti-bloqueio em SC. Lideranças aguardam publicação no DOU. Paralisação parcial possível em estados estratégicos.</div></div>
+            </div>
+            <div class="card"><div class="clbl">Impacto Projetado por Duração</div>
+              <table style="margin-top:8px"><thead><tr><th>Duração</th><th>Postos</th><th>IPCA</th></tr></thead>
+              <tbody>
+                <tr><td class="tv">1–2 dias</td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">Filas locais</span></td><td class="tv">+0,1%</td></tr>
+                <tr><td class="tv">3–5 dias</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">Racionamento</span></td><td class="tv">+0,4–0,8%</td></tr>
+                <tr><td class="tv">7–10 dias</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">Crise 2018</span></td><td class="tv">+1,26%+</td></tr>
+                <tr><td class="tv">10+ dias</td><td><span class="tbadge" style="background:#3A0A0A;color:var(--red)">Colapso</span></td><td class="tv">Sistêmico</td></tr>
+              </tbody></table>
+              <p class="note">Ref: Greve 2018 durou 11 dias. Prejuízo: R$ 10–16 bi.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RISCO ── -->
+        <div class="stpanel" id="st-risk">
+          <div class="sect">MATRIZ DE RISCO</div>
+          <div class="scorerow">
+            <div class="scorecard"><div class="scorenum" style="color:var(--red)">82</div><div class="scorelbl">RISCO LOGÍSTICO<br>(0–100)</div></div>
+            <div class="scorecard"><div class="scorenum" style="color:var(--amber)">65</div><div class="scorelbl">RISCO DIESEL<br>(0–100)</div></div>
+            <div class="scorecard"><div class="scorenum" style="color:var(--green)">30</div><div class="scorelbl">RISCO GASOLINA<br>(0–100)</div></div>
+          </div>
+          <div class="card"><table>
+            <thead><tr><th>Fator</th><th>Combustível</th><th>Probabilidade</th><th>Severidade</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Paralisação caminhoneiros</td><td>Diesel + Gasolina</td><td class="tv">Alta (45–60%)</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">CRÍTICA</span></td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">⚠ ATIVO</span></td></tr>
+              <tr><td>Hormuz bloqueado (Oriente Médio)</td><td>Diesel (importado)</td><td class="tv">Confirmado</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">CRÍTICA</span></td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">⚠ ATIVO</span></td></tr>
+              <tr><td>Reman (AM) a 20% capacidade</td><td>Diesel + Gasolina</td><td class="tv">Confirmado</td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">CRÍTICA (Norte)</span></td><td><span class="tbadge" style="background:var(--red-dim);color:var(--red)">⚠ ATIVO</span></td></tr>
+              <tr><td>Dependência importação diesel</td><td>Diesel</td><td class="tv">Confirmado</td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">MODERADA</span></td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">MONIT.</span></td></tr>
+              <tr><td>Especulação distribuidoras</td><td>Diesel + Gasolina</td><td class="tv">Investigada</td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">MODERADA</span></td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">INVEST.</span></td></tr>
+              <tr><td>Safra 2025/26 em escoamento</td><td>Diesel</td><td class="tv">Em curso</td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">ALTA (sazonal)</span></td><td><span class="tbadge" style="background:var(--amber-dim);color:var(--amber)">MONIT.</span></td></tr>
+            </tbody>
+          </table></div>
+          <div class="sect">VEREDICTO</div>
+          <div class="abox"><div class="atitle" style="font-size:13px">⚠ RISCO DE FALTA PONTUAL: ELEVADO — FALTA SISTÊMICA: MODERADO</div><div class="atext" style="margin-top:6px;font-size:12px;line-height:1.6">O Brasil não enfrenta escassez estrutural no curto prazo. O risco real é <strong style="color:var(--text)">logístico, não produtivo</strong>. Uma paralisação de 5+ dias em março/2026 — mês de safra — pode provocar desabastecimento regional severo, especialmente Norte e Centro-Oeste. O Hormuz bloqueado impacta via preço, não via falta física de volume.</div></div>
+        </div>
+
+      </div><!-- /dash-inner -->
+    </div><!-- /page-dash -->
+
+    <!-- ══════════════════════════════════════════
+         PAGE 2 — MAP
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-map">
+      <div id="map-wrap">
+        <div id="mloading">
+          <div class="ld-txt">CARREGANDO MAPA GEOPOLÍTICO</div>
+          <div class="ld-bar"><div class="ld-fill"></div></div>
+        </div>
+
+        <!-- left panel -->
+        <div class="mpanel" id="mp-left">
+          <div class="mphdr">ROTAS DE IMPORTAÇÃO</div>
+          <div class="ftabs">
+            <button class="ft on" data-f="all">TODOS</button>
+            <button class="ft" data-f="crude">CRUS</button>
+            <button class="ft" data-f="refined">DERIV.</button>
+          </div>
+          <div id="rlist"></div>
+        </div>
+
+        <!-- right panel -->
+        <div class="mpanel" id="mp-right">
+          <div class="mphdr">CHOKEPOINTS GLOBAIS</div>
+          <div id="clist"></div>
+        </div>
+
+        <!-- legend -->
+        <div id="mlegend">
+          <div class="ll"><div class="ll-line" style="background:var(--red)"></div><span>Risco Crítico (Hormuz bloqueado)</span></div>
+          <div class="ll"><div class="ll-line" style="background:var(--amber)"></div><span>Risco Alto (geopolítico)</span></div>
+          <div class="ll"><div class="ll-line" style="background:var(--gold)"></div><span>Risco Moderado</span></div>
+          <div class="ll"><div class="ll-line" style="background:var(--green)"></div><span>Risco Baixo</span></div>
+          <div class="ll" style="margin-top:4px"><div class="ll-dot" style="background:var(--gold)"></div><span style="color:var(--gold)">Destino — Porto de Santos/SP</span></div>
+        </div>
+
+        <svg id="gmap"></svg>
+        <div id="mtt"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 3 — SECTOR INVESTMENT ANALYSIS
+    ══════════════════════════════════════════ -->
+    <div class="page" id="page-inv">
+      <div id="inv-inner">
+
+        <div class="data-banner">
+          <div class="db-item"><div class="db-lbl">BRENT</div><div class="db-val" id="db-brent">—</div></div>
+          <div class="db-item"><div class="db-lbl">CÂMBIO</div><div class="db-val" id="db-cambio">—</div></div>
+          <div class="db-item"><div class="db-lbl">CENÁRIO</div><div class="db-val" id="db-scenario" style="font-size:13px;padding-top:4px">—</div></div>
+          <div class="db-item" style="flex:1"><div class="db-lbl">ALERTAS</div><div id="db-alertas" style="font-size:9px;color:var(--red);font-family:'DM Mono';margin-top:2px"></div></div>
+          <div class="db-update" id="db-update"></div>
+        </div>
+        <div class="inv-disc" id="inv-narrativa"></div>
+
+        <div class="stabs">
+          <button class="st on" onclick="setInvSt('ist-setor',this)">Visão Setorial</button>
+          <button class="st" onclick="setInvSt('ist-empresa',this)">Análise por Empresa</button>
+          <button class="st" onclick="setInvSt('ist-tesoura',this)">Tesoura de Margens</button>
+          <button class="st" onclick="setInvSt('ist-cat',this)">Catalisadores</button>
+        </div>
+
+        <div class="stpanel on" id="ist-setor">
+          <div class="inv-g2" style="margin-bottom:12px">
+            <div>
+              <div class="sect">🎯 POSICIONAMENTO<span class="sect-note">Brent Sensitivity × Risco Regulatório</span></div>
+              <div class="inv-card" style="padding:14px 16px 8px"><canvas id="quad-canvas" style="width:100%;height:280px"></canvas></div>
+            </div>
+            <div>
+              <div class="sect">💹 SENSIBILIDADE AO BRENT<span class="sect-note">Impacto EBITDA por US$10/bbl</span></div>
+              <div class="inv-card" style="padding:14px 16px 8px"><canvas id="sens-canvas" style="width:100%;height:280px"></canvas></div>
+            </div>
+          </div>
+          <div class="sect">📊 COMPARATIVO SETORIAL</div>
+          <div class="inv-card" style="padding:10px 14px"><div style="overflow-x:auto"><table class="sec-tbl" id="sec-table"></table></div></div>
+        </div>
+
+        <div class="stpanel" id="ist-empresa">
+          <div class="co-tabs" id="co-tabs"></div>
+          <div id="co-detail"></div>
+        </div>
+
+        <div class="stpanel" id="ist-tesoura">
+          <div class="sect">✂ TESOURA DE MARGENS — DIESEL<span class="sect-note">Petrobras refinaria vs Paridade de Importação (PPI) · R$/L</span></div>
+          <div class="inv-card" style="padding:14px 18px 8px;margin-bottom:12px"><canvas id="c-tesoura" style="width:100%;height:260px"></canvas></div>
+          <div class="inv-g3">
+            <div class="inv-card" style="padding:14px;border-left:3px solid var(--red)">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--red);font-family:'DM Mono';margin-bottom:6px">DEFASAGEM ATUAL</div>
+              <div style="font-family:'Bebas Neue';font-size:36px;color:var(--red)" id="def-pct">—</div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Petrobras vende diesel abaixo da paridade PPI</div>
+            </div>
+            <div class="inv-card" style="padding:14px;border-left:3px solid var(--amber)">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--amber);font-family:'DM Mono';margin-bottom:6px">IMPACTO NO FCF</div>
+              <div style="font-family:'Bebas Neue';font-size:36px;color:var(--amber)">–29%</div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:4px">FCF caiu de US$23,3bi para US$16,5bi em 2025</div>
+            </div>
+            <div class="inv-card" style="padding:14px;border-left:3px solid var(--gold)">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.15em;color:var(--gold);font-family:'DM Mono';margin-bottom:6px">RISCO POLÍTICO</div>
+              <div style="font-family:'Bebas Neue';font-size:36px;color:var(--gold)">2026</div>
+              <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Ano eleitoral maximiza pressão por não repasse</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stpanel" id="ist-cat">
+          <div class="sect">⚖ CATALISADORES SETORIAIS<span class="sect-note">Probabilidade × Impacto no setor</span></div>
+          <div class="inv-g2">
+            <div class="inv-card" style="padding:14px 18px 8px"><canvas id="c-bubble" style="width:100%;height:320px"></canvas></div>
+            <div class="inv-card" style="padding:12px 16px;overflow-y:auto;max-height:360px" id="cat-list"></div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page-inv -->
+
+
+    <!-- PAGE 4 — SUPPLY SHOCK SIMULATOR -->
+    <div class="page" id="page-sim">
+<style>
+#page-sim{overflow-y:auto}
+#sim-inner{max-width:1320px;margin:0 auto;padding:14px 22px 60px}
+.sim-top-bar{display:flex;align-items:center;gap:12px;background:rgba(200,56,56,.1);border:1px solid rgba(200,56,56,.3);border-radius:4px;padding:10px 16px;margin-bottom:12px}
+.sim-top-icon{font-size:20px;flex-shrink:0}
+.sim-top-title{font-family:'Bebas Neue';font-size:17px;letter-spacing:.06em;color:var(--red)}
+.sim-top-sub{font-size:9px;color:var(--text-dim);font-family:'DM Mono'}
+#sim-badge{margin-left:auto;font-size:9px;font-weight:700;padding:5px 11px;border-radius:2px;font-family:'DM Mono';white-space:nowrap;flex-shrink:0}
+/* Controls row */
+.sc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.sc-card{background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px;padding:13px 15px}
+.sc-lbl{font-size:8px;font-weight:700;letter-spacing:.16em;color:var(--text-dim);font-family:'DM Mono';margin-bottom:6px}
+.sc-num{font-family:'Bebas Neue';font-size:30px;line-height:1;margin-bottom:7px}
+input.sim-range{width:100%;-webkit-appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;background:var(--ink-4)}
+input.sim-range::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;border:2px solid var(--ink)}
+input.sim-range.r::-webkit-slider-thumb{background:var(--red)}
+input.sim-range.a::-webkit-slider-thumb{background:var(--amber)}
+input.sim-range.g::-webkit-slider-thumb{background:var(--gold)}
+.sc-hints{display:flex;justify-content:space-between;font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-top:4px}
+/* Gauges */
+.sg-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.sg-card{background:var(--ink-2);border:1px solid var(--ink-4);border-radius:3px;padding:10px 12px;text-align:center}
+.sg-val{font-family:'Bebas Neue';font-size:28px;line-height:1}
+.sg-lbl{font-size:8px;color:var(--text-dim);font-family:'DM Mono';letter-spacing:.08em;margin-top:2px}
+/* Main grid */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sim-map-card{background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px;padding:12px 14px}
+.sim-map-title{font-size:9px;font-weight:700;letter-spacing:.16em;color:var(--gold);font-family:'DM Mono';margin-bottom:10px}
+.map-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.ml-item{display:flex;align-items:center;gap:5px;font-size:8px;color:var(--text-dim);font-family:'DM Mono'}
+.ml-box{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+/* Right panel */
+.sim-right-col{display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.sim-panel{background:var(--ink-2);border:1px solid var(--ink-4);border-radius:4px;padding:12px 14px}
+.sp-title{font-size:8px;font-weight:700;letter-spacing:.16em;color:var(--gold);font-family:'DM Mono';margin-bottom:10px}
+/* Region rows */
+.rr{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.rr:last-child{border-bottom:none}
+.rr-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .3s}
+.rr-name{font-size:11px;font-weight:700;width:98px;flex-shrink:0;color:var(--text)}
+.rr-bar-t{flex:1;height:5px;background:var(--ink-4);border-radius:3px;overflow:hidden}
+.rr-bar{height:100%;border-radius:3px;transition:width .4s,background .4s}
+.rr-st{font-size:8px;font-family:'DM Mono';font-weight:700;width:72px;text-align:right;flex-shrink:0;transition:color .3s}
+.rr-days{font-size:8px;color:var(--text-dim);font-family:'DM Mono';width:76px;text-align:right;flex-shrink:0}
+/* Timeline */
+.tl-wrap{max-height:220px;overflow-y:auto}
+.tl-r{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.035)}
+.tl-r:last-child{border-bottom:none}
+.tl-d{width:38px;flex-shrink:0;font-family:'Bebas Neue';font-size:13px;padding-top:1px}
+.tl-body{flex:1}
+.tl-ev{font-size:10px;font-weight:600;line-height:1.3}
+.tl-dt{font-size:8px;color:var(--text-dim);margin-top:1px;line-height:1.4;font-family:'DM Mono'}
+/* Alert */
+.sim-alert{padding:9px 12px;border-radius:3px;border-left:3px solid var(--red);background:var(--red-dim)}
+.sim-alert.warn{border-left-color:var(--amber);background:var(--amber-dim)}
+.sim-alert.ok{border-left-color:var(--green);background:var(--green-dim)}
+.sa-t{font-size:11px;font-weight:700;margin-bottom:3px}
+.sa-b{font-size:10px;color:var(--text-dim);line-height:1.5}
+@media(max-width:860px){.sc-row,.sim-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:580px){.sc-row,.sim-grid,.sg-row{grid-template-columns:1fr}}
+</style>
+      <div id="sim-inner">
+
+        <div class="sim-top-bar">
+          <div class="sim-top-icon">⚠️</div>
+          <div>
+            <div class="sim-top-title">SIMULADOR DE CHOQUE DE ABASTECIMENTO — DIESEL</div>
+            <div class="sim-top-sub">Ajuste os parâmetros para simular o impacto regional. Baseado em dados ANP · EPE · S&P Global · IBP. Não constitui previsão oficial.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;flex-shrink:0">
+            <div id="sim-badge"></div>
+            <button onclick="setRealScenario()" style="background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-size:8px;font-weight:700;padding:4px 10px;border-radius:2px;font-family:'DM Mono';cursor:pointer;white-space:nowrap">📍 CARREGAR CENÁRIO REAL (28/03/26)</button>
+          </div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="sc-row">
+          <div class="sc-card">
+            <div class="sc-lbl">REDUÇÃO NAS IMPORTAÇÕES</div>
+            <div class="sc-num" id="sv-imp" style="color:var(--red)">60%</div>
+            <input class="sim-range r" id="sl-imp" type="range" min="0" max="100" value="60" oninput="runSim()">
+            <div class="sc-hints"><span>0% (normal)</span><span>50%</span><span>100% (paralisia)</span></div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-lbl">DIAS DE DURAÇÃO DO CHOQUE</div>
+            <div class="sc-num" id="sv-days" style="color:var(--amber)">15 dias</div>
+            <input class="sim-range a" id="sl-days" type="range" min="1" max="90" value="15" oninput="runSim()">
+            <div class="sc-hints"><span>1 dia</span><span>30d</span><span>90 dias</span></div>
+          </div>
+          <div class="sc-card">
+            <div class="sc-lbl">GREVE CAMINHONEIROS SIMULTÂNEA</div>
+            <div class="sc-num" id="sv-greve" style="color:var(--gold)">NÃO</div>
+            <input class="sim-range g" id="sl-greve" type="range" min="0" max="1" value="0" step="1" oninput="runSim()">
+            <div class="sc-hints"><span>Não</span><span></span><span>Sim (+agravante)</span></div>
+          </div>
+        </div>
+
+        <!-- Macro gauges -->
+        <div class="sg-row">
+          <div class="sg-card"><div class="sg-val" id="gv-diesel">—</div><div class="sg-lbl">BI L DIESEL EM RISCO/MÊS</div></div>
+          <div class="sg-card"><div class="sg-val" id="gv-ipca">—</div><div class="sg-lbl">IMPACTO ESTIMADO IPCA</div></div>
+          <div class="sg-card"><div class="sg-val" id="gv-pib">—</div><div class="sg-lbl">PERDA ESTIMADA PIB</div></div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="sim-grid">
+
+          <!-- MAP -->
+          <div class="sim-map-card">
+            <div class="sim-map-title">🗺 MAPA DE IMPACTO REGIONAL — DIESEL</div>
+            <svg id="br-svg" viewBox="0 0 420 480" style="width:100%;height:auto;display:block;background:var(--ink);border-radius:3px"></svg>
+            <div class="map-legend">
+              <div class="ml-item"><div class="ml-box" style="background:#2E8A50"></div>ESTÁVEL</div>
+              <div class="ml-item"><div class="ml-box" style="background:#CC8020"></div>ALERTA</div>
+              <div class="ml-item"><div class="ml-box" style="background:#C83838"></div>ESCASSEZ</div>
+              <div class="ml-item"><div class="ml-box" style="background:#5A0000"></div>COLAPSO</div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="sim-right-col">
+
+            <div class="sim-panel">
+              <div class="sp-title">STATUS POR REGIÃO</div>
+              <div id="reg-list"></div>
+            </div>
+
+            <div class="sim-panel" style="flex:1">
+              <div class="sp-title" style="display:flex;align-items:center;justify-content:space-between">
+                <span>⏱ LINHA DO TEMPO DO COLAPSO</span>
+                <span style="background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-size:8px;font-weight:700;padding:2px 8px;border-radius:2px;font-family:'DM Mono'">📍 DIA 25 = HOJE</span>
+              </div>
+              <div class="tl-wrap" id="sim-tl"></div>
+            </div>
+
+            <div id="sim-alert"></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page-sim -->
+
+  </div><!-- /pages -->
+
+  <!-- ── FOOTER ── -->
+  <div id="footer">
+    <div class="f-brand"><span class="f-os">OS</span><div class="f-bar"></div><span>CAPITAL</span></div>
+    <div class="f-src">FONTES: ANP · PETROBRAS · IBP · EPE · STONEX · CNT · EIA · IEA · KPLER · VORTEXA · INEEP · STATISTA · TRADEINT · MDIC</div>
+    <div class="f-date">MARÇO 2026</div>
+  </div>
+
+</div><!-- /chrome -->
+
+<script>
+// ─── PAGE NAV ────────────────────────────────────────────────
+function setPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'map' && !mapReady) initMap();
+// Initialize global price bar
+window.addEventListener('load', () => { onPrecoChange(); });
+  if (id === 'inv' && !invReady) initInvPage();
+  if (id === 'sim' && !simReady) initSim();
+}
+
+// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// INVESTMENT PAGE — reads from window.DADOS_SETOR
+// ═══════════════════════════════════════════════════════
+let invReady = false;
+function initInvPage() {
+  if(invReady)return; invReady=true;
+  const D=window.DADOS_SETOR;
+  if(!D){console.warn('DADOS_SETOR not loaded');return;}
+  fillBanner(D);
+  setTimeout(()=>{
+    sizeC('quad-canvas',280);sizeC('sens-canvas',280);
+    sizeC('c-tesoura',260);sizeC('c-bubble',320);
+    drawQuadrant(D);drawSensBar(D);drawTesouraInv(D);drawBubbleInv(D);
+    buildSectorTable(D);buildCoTabs(D);buildCatList(D);
+    selectCo(Object.keys(D.empresas)[0],D);
+  },140);
+}
+function setInvSt(id,btn){
+  document.querySelectorAll('#page-inv .stpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#page-inv .st').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');btn.classList.add('on');
+}
+function sizeC(id,h){
+  const c=document.getElementById(id);if(!c)return;
+  const w=c.parentElement.clientWidth-36;
+  c.width=w*devicePixelRatio;c.height=h*devicePixelRatio;
+  c.style.width=w+'px';c.style.height=h+'px';
+  c.getContext('2d').scale(devicePixelRatio,devicePixelRatio);
+}
+function cW(id){const c=document.getElementById(id);return c?c.width/devicePixelRatio:0;}
+function cH(id){const c=document.getElementById(id);return c?c.height/devicePixelRatio:0;}
+function ctx2d(id){return document.getElementById(id)?.getContext('2d');}
+
+function fillBanner(D){
+  const m=D.meta;
+  const bd=((m.brent-m.brentAnterior)/m.brentAnterior*100).toFixed(0);
+  document.getElementById('db-brent').textContent='US$'+m.brent+' (+'+bd+'% YTD)';
+  document.getElementById('db-cambio').textContent='R$'+m.cambio;
+  const smap={ok:'ESTÁVEL',alerta:'ATENÇÃO',critico:'CRÍTICO'};
+  const scol={ok:'var(--green)',alerta:'var(--amber)',critico:'var(--red)'};
+  const se=document.getElementById('db-scenario');
+  se.textContent=smap[m.cenarioGlobal];se.style.color=scol[m.cenarioGlobal];
+  document.getElementById('db-alertas').innerHTML=m.alertas.map(a=>'⚠ '+a).join(' &nbsp;|&nbsp; ');
+  document.getElementById('db-update').innerHTML='<div style="text-align:right"><div class="db-lbl">ATUALIZADO</div><div style="font-size:11px;color:var(--gold);font-family:monospace">'+m.atualizadoEm+'</div><div class="db-lbl" style="margin-top:2px">PR\u00d3XIMA REVIS\u00c3O</div><div style="font-size:11px;color:var(--text-dim);font-family:monospace">'+m.proximaRevisao+'</div></div>';
+  document.getElementById('inv-narrativa').textContent=m.narrativa;
+  // tesoura defasagem
+  const last=D.tesoura[D.tesoura.length-1];
+  const def=Math.round((last.pp/last.pb-1)*100);
+  const de=document.getElementById('def-pct');if(de)de.textContent='–'+def+'%';
+}
+
+function drawQuadrant(D){
+  const id='quad-canvas',ct=ctx2d(id),W=cW(id),H=cH(id);
+  if(!ct)return;ct.clearRect(0,0,W,H);
+  const pad={t:28,r:20,b:48,l:56};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const xs=v=>pad.l+(v+100)/200*cw;
+  const ys=v=>pad.t+ch-(v/100)*ch;
+  ct.fillStyle='rgba(200,56,56,.07)';ct.fillRect(pad.l,pad.t+ch/2,cw/2,ch/2);
+  ct.fillStyle='rgba(200,150,58,.06)';ct.fillRect(pad.l+cw/2,pad.t+ch/2,cw/2,ch/2);
+  ct.fillStyle='rgba(46,138,80,.09)';ct.fillRect(pad.l+cw/2,pad.t,cw/2,ch/2);
+  ct.fillStyle='rgba(58,130,192,.05)';ct.fillRect(pad.l,pad.t,cw/2,ch/2);
+  ct.strokeStyle='rgba(255,255,255,.1)';ct.lineWidth=1;
+  ct.beginPath();ct.moveTo(pad.l+cw/2,pad.t);ct.lineTo(pad.l+cw/2,H-pad.b);ct.stroke();
+  ct.beginPath();ct.moveTo(pad.l,pad.t+ch/2);ct.lineTo(W-pad.r,pad.t+ch/2);ct.stroke();
+  const zl=[['SQUEEZE MARGEM',pad.l+cw*.15,pad.t+20],['BULL PURO',pad.l+cw*.78,pad.t+20],['POLÍTICO',pad.l+cw*.78,pad.t+ch*.78],['PIOR CASO',pad.l+cw*.15,pad.t+ch*.78]];
+  zl.forEach(z=>{ct.fillStyle='rgba(122,128,144,.32)';ct.font='bold 8px "DM Mono"';ct.textAlign='center';ct.fillText(z[0],z[1],z[2]);});
+  ct.fillStyle='rgba(122,128,144,.7)';ct.font='9px "DM Mono"';ct.textAlign='center';
+  ct.fillText('← BRENT PREJUDICA          BRENT BENEFICIA →',pad.l+cw/2,H-4);
+  ct.save();ct.translate(13,H/2);ct.rotate(-Math.PI/2);ct.fillText('RISCO REGULATÓRIO →',0,0);ct.restore();
+  Object.values(D.empresas).forEach(e=>{
+    const x=xs(e.sensibilidadeBrent),y=ys(e.riscoRegulatorio);
+    const col=e.sensibilidadeBrent>50?'#2E8A50':e.sensibilidadeBrent<-40?'#C83838':e.riscoRegulatorio>65?'#CC8020':'#C8963A';
+    ct.shadowColor=col;ct.shadowBlur=12;
+    ct.beginPath();ct.arc(x,y,9,0,Math.PI*2);
+    ct.fillStyle=col+'35';ct.fill();ct.strokeStyle=col;ct.lineWidth=2;ct.stroke();
+    ct.shadowBlur=0;
+    ct.fillStyle='rgba(232,228,220,.9)';ct.font='8px "DM Mono"';ct.textAlign='center';
+    ct.fillText(e.ticker,x,y+20);
+    ct.font='11px serif';ct.fillText(e.icone,x,y+4);
+  });
+}
+
+function drawSensBar(D){
+  const id='sens-canvas',ct=ctx2d(id),W=cW(id),H=cH(id);
+  if(!ct)return;ct.clearRect(0,0,W,H);
+  const empresas=Object.values(D.empresas);
+  const sensi=D.sensibilidade.impactoPor10dolarBrent;
+  const pad={t:24,r:16,b:44,l:112};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const bh=(ch/empresas.length)*.62,gap=(ch/empresas.length)*.19;
+  const minV=-8,maxV=10;
+  const xs=v=>pad.l+(v-minV)/(maxV-minV)*cw;
+  const ys=i=>pad.t+i*(ch/empresas.length)+gap;
+  ct.strokeStyle='rgba(255,255,255,.18)';ct.lineWidth=1.5;
+  ct.beginPath();ct.moveTo(xs(0),pad.t);ct.lineTo(xs(0),H-pad.b);ct.stroke();
+  [-6,-4,-2,2,4,6,8].forEach(v=>{
+    ct.strokeStyle='rgba(255,255,255,.04)';ct.lineWidth=1;
+    ct.beginPath();ct.moveTo(xs(v),pad.t);ct.lineTo(xs(v),H-pad.b);ct.stroke();
+    ct.fillStyle='rgba(122,128,144,.8)';ct.font='8px "DM Mono"';ct.textAlign='center';
+    ct.fillText((v>0?'+':'')+v+'%',xs(v),H-6);
+  });
+  empresas.forEach((e,i)=>{
+    const s=sensi[e.ticker];if(!s)return;
+    const v=s.ebitda,y=ys(i);
+    const col=v>=0?'#2E8A50':'#C83838';
+    const x0=xs(0),x1=xs(Math.min(Math.max(v,minV),maxV)),w=Math.abs(x1-x0);
+    ct.fillStyle=col+'22';ct.fillRect(Math.min(x0,x1),y,w,bh);
+    ct.fillStyle=col;ct.fillRect(Math.min(x0,x1),y,w,3);
+    ct.fillStyle='rgba(232,228,220,.9)';ct.font='bold 10px "Barlow Condensed"';ct.textAlign='right';
+    ct.fillText(e.icone+' '+e.ticker,pad.l-5,y+bh/2+4);
+    ct.fillStyle=col;ct.font='bold 9px "DM Mono"';ct.textAlign=v>=0?'left':'right';
+    ct.fillText((v>0?'+':'')+v+'%',v>=0?x1+4:x1-4,y+bh/2+4);
+  });
+  ct.fillStyle='rgba(122,128,144,.7)';ct.font='8px "DM Mono"';ct.textAlign='center';
+  ct.fillText('Impacto no EBITDA por US$10/bbl no Brent',W/2,H-1);
+}
+
+function buildSectorTable(D){
+  const rc={COMPRA:'var(--green)',NEUTRO:'var(--amber)',VENDA:'var(--red)'};
+  const rb={COMPRA:'var(--green-dim)',NEUTRO:'var(--amber-dim)',VENDA:'var(--red-dim)'};
+  let h=`<table class="sec-tbl"><thead><tr><th>EMPRESA</th><th>TICKER</th><th>PREÇO</th><th>TARGET</th><th>UPSIDE</th><th>P/L</th><th>DY%</th><th>EBITDA%</th><th>BRENT SENS.</th><th>RISCO</th><th>CONSENSO</th></tr></thead><tbody>`;
+  Object.values(D.empresas).forEach(e=>{
+    const up=((e.precoAlvoConsensus-e.preco)/e.preco*100).toFixed(1);
+    const uc=+up>5?'var(--green)':+up<-5?'var(--red)':'var(--amber)';
+    const bc=e.sensibilidadeBrent>50?'var(--green)':e.sensibilidadeBrent<-30?'var(--red)':'var(--amber)';
+    const rCol=e.riscoRegulatorio>60?'var(--red)':e.riscoRegulatorio>40?'var(--amber)':'var(--green)';
+    const lr=e.recomendacoes?.[0];
+    h+=`<tr><td><span class="tco">${e.icone} ${e.nome}</span><br><span style="font-size:9px;color:var(--text-dim)">${e.tipo}</span></td><td class="tmv">${e.ticker}</td><td class="tmv">R$${e.preco.toFixed(2)}</td><td class="tmv">R$${e.precoAlvoConsensus.toFixed(2)}</td><td class="tmv" style="color:${uc};font-weight:700">${+up>0?'+':''}${up}%</td><td class="tmv" style="color:${e.pl<0?'var(--red)':'inherit'}">${e.pl}x</td><td class="tmv">${e.dy||'—'}%</td><td class="tmv">${e.ebitdaMargin}%</td><td><div style="display:flex;align-items:center;gap:5px"><div style="width:${Math.min(50,Math.abs(e.sensibilidadeBrent)/2)}px;height:3px;background:${bc};border-radius:2px"></div><span class="tmv" style="color:${bc}">${e.sensibilidadeBrent>0?'+':''}${e.sensibilidadeBrent}</span></div></td><td><div style="display:flex;align-items:center;gap:5px"><div style="width:${Math.min(50,e.riscoRegulatorio/2)}px;height:3px;background:${rCol};border-radius:2px"></div><span class="tmv" style="color:${rCol}">${e.riscoRegulatorio}</span></div></td><td>${lr?`<span class="tbdg" style="background:${rb[lr.rec]};color:${rc[lr.rec]}">${lr.rec}</span> <span class="tmv">R$${lr.target}</span>`:'—'}</td></tr>`;
+  });
+  h+='</tbody></table>';
+  const el=document.getElementById('sec-table');if(el)el.outerHTML=h;
+}
+
+function buildCoTabs(D){
+  const c=document.getElementById('co-tabs');if(!c)return;
+  c.innerHTML=Object.values(D.empresas).map(e=>`<button class="co-btn" data-tk="${e.ticker}" onclick="selectCo('${e.ticker}',window.DADOS_SETOR)">${e.icone} ${e.ticker}</button>`).join('');
+}
+
+function selectCo(ticker,D){
+  document.querySelectorAll('.co-btn').forEach(b=>b.classList.toggle('active',b.dataset.tk===ticker));
+  const e=D.empresas[ticker];if(!e)return;
+  const rc={COMPRA:'var(--green)',NEUTRO:'var(--amber)',VENDA:'var(--red)'};
+  const rb={COMPRA:'var(--green-dim)',NEUTRO:'var(--amber-dim)',VENDA:'var(--red-dim)'};
+  const up=((e.precoAlvoConsensus-e.preco)/e.preco*100).toFixed(1);
+  const uc=+up>5?'var(--green)':+up<-5?'var(--red)':'var(--amber)';
+  const c2=e.cenarios;
+  const np=e.preco;
+  let mh=`<table class="matz"><thead><tr><th>INTERV. \ BRENT</th>`;
+  c2.brentz.forEach(b=>mh+=`<th>US$${b}</th>`);
+  mh+=`</tr></thead><tbody>`;
+  c2.intervencoes.forEach(iv=>{
+    mh+=`<tr><th style="text-align:left;font-size:9px;padding:7px 10px;background:var(--ink-3)">${iv}</th>`;
+    c2.brentz.forEach(b=>{
+      const t=c2.targets[iv][b],d=((t-np)/np*100).toFixed(0);
+      const isc=b===c2.brentAtual&&iv===c2.intervencaoAtual;
+      const bg=t>np?`rgba(46,138,80,${Math.min(.5,(t-np)/50)})`:`rgba(200,56,56,${Math.min(.5,(np-t)/50)})`;
+      const dc=t>np?'var(--green)':'var(--red)';
+      mh+=`<td style="background:${bg};color:var(--text)" class="${isc?'cur':''}">R$${t}<span class="matz-d" style="color:${dc}">${+d>0?'+':''}${d}%</span>${isc?'<span class="matz-c">← atual</span>':''}</td>`;
+    });
+    mh+=`</tr>`;
+  });
+  mh+=`</tbody></table>`;
+  if(c2.nota)mh+=`<div style="font-size:9px;color:var(--text-dim);font-family:monospace;margin-top:5px">※ ${c2.nota}</div>`;
+  const fd=D.fcfHistorico[ticker]||[];
+  const mf=Math.max(...fd.map(f=>Math.abs(f.fcf)),.1);
+  const fb=fd.map(f=>{const p=Math.min(100,Math.abs(f.fcf)/mf*100);const cl=f.fcf>=0?'var(--diesel)':'var(--red)';return`<div class="brow"><div class="blbl">${f.ano}</div><div class="btrack"><div class="bfill" style="width:${p}%;background:${cl};color:${f.fcf<0?'#fff':'var(--ink)'}">$${f.fcf}b</div></div></div>`;}).join('');
+  const rh=(e.recomendacoes||[]).map(r=>`<span class="rec-pill" style="background:${rb[r.rec]||'var(--ink-4)'};color:${rc[r.rec]||'var(--text-dim)'}">${r.casa}: ${r.rec} R$${r.target}</span>`).join('');
+  const sensiD=D.sensibilidade.impactoPor10dolarBrent[ticker];
+  document.getElementById('co-detail').innerHTML=`
+    <div class="co-kpis">
+      <div class="co-kpi ${+up>5?'grn':+up<-5?'red':'amb'}">
+        <div class="ck-l">PREÇO</div><div class="ck-v">R$${e.preco.toFixed(2)}</div>
+        <div class="ck-s" style="color:${e.varYTD>0?'var(--green)':'var(--red)'}">${e.varYTD>0?'▲':'▼'}${Math.abs(e.varYTD)}% YTD</div>
+      </div>
+      <div class="co-kpi"><div class="ck-l">TARGET</div><div class="ck-v" style="color:${uc}">R$${e.precoAlvoConsensus.toFixed(2)}</div><div class="ck-s" style="color:${uc}">${+up>0?'+':''}${up}% upside</div></div>
+      <div class="co-kpi"><div class="ck-l">P/L</div><div class="ck-v" style="color:${e.pl<0?'var(--red)':'var(--text)'}">${e.pl}x</div><div class="ck-s">P/VP ${e.pvp}x</div></div>
+      <div class="co-kpi ${e.dy>8?'grn':e.dy>4?'amb':''}"><div class="ck-l">DIV. YIELD</div><div class="ck-v">${e.dy}%</div><div class="ck-s">últimos 12m</div></div>
+      <div class="co-kpi"><div class="ck-l">EBITDA%</div><div class="ck-v">${e.ebitdaMargin}%</div><div class="ck-s">US$${e.ebitdaUSD}bi</div></div>
+      <div class="co-kpi ${e.fcfUSD<0?'red':''}"><div class="ck-l">FCF 2025</div><div class="ck-v" style="color:${e.fcfUSD<0?'var(--red)':'var(--text)'}">$${e.fcfUSD}b</div><div class="ck-s">Dívida: $${e.dividaLiqUSD}b</div></div>
+      <div class="co-kpi ${e.sensibilidadeBrent>50?'grn':e.sensibilidadeBrent<-30?'red':'amb'}">
+        <div class="ck-l">BRENT SENS.</div>
+        <div class="ck-v" style="color:${e.sensibilidadeBrent>50?'var(--green)':e.sensibilidadeBrent<-30?'var(--red)':'var(--amber)'}">${e.sensibilidadeBrent>0?'+':''}${e.sensibilidadeBrent}</div>
+        <div class="ck-s">${sensiD?('EBITDA '+(sensiD.ebitda>0?'+':'')+sensiD.ebitda+'% / $10bbl'):'—'}</div>
+      </div>
+    </div>
+    <div class="inv-g2" style="margin-bottom:10px">
+      <div>
+        <div class="sect" style="margin-top:0">${e.icone} ${e.nomeCompleto}</div>
+        <div class="inv-card" style="padding:13px 16px;margin-bottom:10px">
+          <div style="font-size:11px;color:var(--text-dim);line-height:1.7;margin-bottom:8px">${e.tese}</div>
+          <div class="rec-row">${rh}</div>
+        </div>
+        <div class="sect" style="margin-top:0">💧 FCF HISTÓRICO</div>
+        <div class="inv-card" style="padding:12px 16px"><div class="bars">${fb}</div>${e.fcfUSD<0?'<div style="font-size:9px;color:var(--red);font-family:monospace;margin-top:5px">⚠ FCF negativo — empresa consome caixa</div>':''}</div>
+      </div>
+      <div>
+        <div class="thesis-grid">
+          <div class="thesis-card" style="background:var(--green-dim);border:1px solid rgba(46,138,80,.2)">
+            <div class="tc-title" style="color:var(--green)">✓ BULL CASE</div>
+            ${e.bull.map(b=>`<div class="tc-item"><span class="tc-dot" style="color:var(--green)">✓</span><span style="font-size:11px;color:var(--text-dim)">${b}</span></div>`).join('')}
+          </div>
+          <div class="thesis-card" style="background:var(--red-dim);border:1px solid rgba(200,56,56,.2)">
+            <div class="tc-title" style="color:var(--red)">✗ BEAR CASE</div>
+            ${e.bear.map(b=>`<div class="tc-item"><span class="tc-dot" style="color:var(--red)">✗</span><span style="font-size:11px;color:var(--text-dim)">${b}</span></div>`).join('')}
+          </div>
+        </div>
+        <div class="sect" style="margin-top:10px">🎯 CENÁRIOS</div>
+        <div class="inv-card" style="padding:12px"><div class="matz-wrap">${mh}</div></div>
+      </div>
+    </div>`;
+}
+
+function drawTesouraInv(D){
+  const id='c-tesoura',ct=ctx2d(id),W=cW(id),H=cH(id);
+  if(!ct)return;ct.clearRect(0,0,W,H);
+  const data=D.tesoura;
+  const pad={t:28,r:16,b:42,l:52};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const minY=2.6,maxY=5.6;
+  const xs=i=>pad.l+(i/(data.length-1))*cw;
+  const ys=v=>pad.t+ch-((v-minY)/(maxY-minY))*ch;
+  [3.0,3.5,4.0,4.5,5.0,5.5].forEach(v=>{
+    ct.strokeStyle='rgba(255,255,255,.05)';ct.lineWidth=1;
+    ct.beginPath();ct.moveTo(pad.l,ys(v));ct.lineTo(W-pad.r,ys(v));ct.stroke();
+    ct.fillStyle='rgba(122,128,144,.85)';ct.font='9px "DM Mono"';ct.textAlign='right';
+    ct.fillText('R$'+v.toFixed(1),pad.l-5,ys(v)+4);
+  });
+  ct.beginPath();
+  data.forEach((d,i)=>i===0?ct.moveTo(xs(i),ys(d.pp)):ct.lineTo(xs(i),ys(d.pp)));
+  for(let i=data.length-1;i>=0;i--)ct.lineTo(xs(i),ys(data[i].pb));
+  ct.closePath();ct.fillStyle='rgba(200,56,56,.15)';ct.fill();
+  ct.beginPath();
+  data.forEach((d,i)=>i===0?ct.moveTo(xs(i),ys(d.pp)):ct.lineTo(xs(i),ys(d.pp)));
+  ct.strokeStyle='#C83838';ct.lineWidth=2;ct.setLineDash([7,4]);ct.stroke();ct.setLineDash([]);
+  ct.beginPath();
+  data.forEach((d,i)=>i===0?ct.moveTo(xs(i),ys(d.pb)):ct.lineTo(xs(i),ys(d.pb)));
+  ct.strokeStyle='#C8963A';ct.lineWidth=2.5;ct.stroke();
+  const last=data[data.length-1];
+  const gp=Math.round((last.pp/last.pb-1)*100);
+  ct.fillStyle='#C83838';ct.font='bold 10px "DM Mono"';ct.textAlign='right';
+  ct.fillText('Defasagem: +'+gp+'%',W-pad.r-4,ys((last.pb+last.pp)/2));
+  ct.fillStyle='rgba(122,128,144,.9)';ct.font='8px "DM Mono"';ct.textAlign='center';
+  data.forEach((d,i)=>{if(i%4===0||i===data.length-1)ct.fillText(d.l,xs(i),H-6);});
+  ct.textAlign='left';
+  ct.fillStyle='#C8963A';ct.fillRect(pad.l,10,18,2);
+  ct.fillStyle='rgba(232,228,220,.8)';ct.font='9px "Barlow Condensed"';ct.fillText('Petrobras refinaria',pad.l+22,15);
+  ct.strokeStyle='#C83838';ct.setLineDash([7,4]);ct.lineWidth=2;
+  ct.beginPath();ct.moveTo(pad.l+145,11);ct.lineTo(pad.l+165,11);ct.stroke();ct.setLineDash([]);
+  ct.fillStyle='rgba(232,228,220,.8)';ct.fillText('Paridade PPI',pad.l+169,15);
+}
+
+function drawBubbleInv(D){
+  const id='c-bubble',ct=ctx2d(id),W=cW(id),H=cH(id);
+  if(!ct)return;ct.clearRect(0,0,W,H);
+  const cats=D.catalisadores;
+  const pad={t:28,r:20,b:44,l:52};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const xs=v=>pad.l+(v/80)*cw;
+  const ys=v=>pad.t+ch-((v+40)/72)*ch;
+  ct.fillStyle='rgba(200,56,56,.07)';ct.fillRect(pad.l,ys(-0.5),cw,ys(-40)-ys(-0.5));
+  ct.fillStyle='rgba(46,138,80,.07)';ct.fillRect(pad.l,pad.t,cw,ys(0)-pad.t);
+  ct.strokeStyle='rgba(255,255,255,.16)';ct.lineWidth=1.5;
+  ct.beginPath();ct.moveTo(pad.l,ys(0));ct.lineTo(W-pad.r,ys(0));ct.stroke();
+  [-30,-20,-10,10,20].forEach(v=>{
+    ct.strokeStyle='rgba(255,255,255,.05)';ct.lineWidth=1;
+    ct.beginPath();ct.moveTo(pad.l,ys(v));ct.lineTo(W-pad.r,ys(v));ct.stroke();
+    ct.fillStyle='rgba(122,128,144,.75)';ct.font='8px "DM Mono"';ct.textAlign='right';
+    ct.fillText((v>0?'+':'')+v+'%',pad.l-4,ys(v)+3);
+  });
+  [20,40,60].forEach(v=>{
+    ct.strokeStyle='rgba(255,255,255,.05)';ct.lineWidth=1;
+    ct.beginPath();ct.moveTo(xs(v),pad.t);ct.lineTo(xs(v),H-pad.b);ct.stroke();
+    ct.fillStyle='rgba(122,128,144,.75)';ct.font='8px "DM Mono"';ct.textAlign='center';
+    ct.fillText(v+'%',xs(v),H-6);
+  });
+  cats.forEach(c=>{
+    const x=xs(c.prob),y=ys(c.impacto);
+    const col=c.tipo==='bear'?'#C83838':'#2E8A50';
+    const r=Math.abs(c.impacto)/2.8+6;
+    ct.shadowColor=col;ct.shadowBlur=10;
+    ct.beginPath();ct.arc(x,y,r,0,Math.PI*2);
+    ct.fillStyle=col+'28';ct.fill();ct.strokeStyle=col;ct.lineWidth=1.8;ct.stroke();
+    ct.shadowBlur=0;
+    ct.beginPath();ct.arc(x,y,2.5,0,Math.PI*2);ct.fillStyle=col;ct.fill();
+    ct.fillStyle='rgba(232,228,220,.8)';ct.font='7.5px "DM Mono"';ct.textAlign='center';
+    c.nome.split(' ').slice(0,2).forEach((ln,li)=>ct.fillText(ln,x,y+r+6+li*9));
+  });
+  ct.fillStyle='rgba(122,128,144,.7)';ct.font='9px "DM Mono"';ct.textAlign='center';
+  ct.fillText('Probabilidade',W/2,H-1);
+  ct.save();ct.translate(11,H/2);ct.rotate(-Math.PI/2);ct.fillText('Impacto no setor (%)',0,0);ct.restore();
+}
+
+function buildCatList(D){
+  const rcols={bear:'#C83838',bull:'#2E8A50'};
+  let h=`<div style="font-size:9px;color:var(--text-dim);font-family:monospace;padding-bottom:6px;border-bottom:1px solid var(--ink-4);margin-bottom:4px">CATALISADORES — ${D.catalisadores.length} identificados</div>`;
+  [...D.catalisadores].sort((a,b)=>b.prob-a.prob).forEach(c=>{
+    const col=rcols[c.tipo];const sign=c.impacto>0?'+':'';
+    const bw=Math.min(100,Math.abs(c.impacto)/40*100);
+    h+=`<div class="cat-item"><div class="cat-dot" style="background:${col}"></div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600">${c.nome}</div><div style="font-size:9px;color:var(--text-dim);font-family:monospace">${c.nota}</div></div><div style="font-family:monospace;font-size:9px;color:var(--text-dim);width:30px;text-align:right">${c.prob}%</div><div style="font-family:monospace;font-size:10px;font-weight:700;color:${col};width:38px;text-align:right">${sign}${c.impacto}%</div><div class="cat-bw"><div class="cat-bf" style="width:${bw}%;background:${col}"></div></div></div>`;
+  });
+  const el=document.getElementById('cat-list');if(el)el.innerHTML=h;
+}
+
+// ═══════════════════════════════════════════════════════
+// SUPPLY SHOCK SIMULATOR
+// ═══════════════════════════════════════════════════════
+let simReady = false;
+
+const SIM_REGIONS = [
+  { id:'norte',       name:'Norte',        depImport:.88, diasEstoque:8,  colapsoDias:3,  consumo:1.4,
+    nota:'Reman a 20%. Único abastecimento via importação ou cabotagem do Sudeste.',
+    lx:155, ly:90,
+    d:`M 80,15 L 180,8 L 245,12 L 295,8 L 330,18 L 355,38 L 365,68
+       L 355,100 L 335,118 L 310,130 L 280,140 L 250,148 L 215,152
+       L 185,148 L 155,138 L 128,118 L 108,92 L 88,60 Z` },
+  { id:'nordeste',    name:'Nordeste',      depImport:.42, diasEstoque:10, colapsoDias:9,  consumo:2.1,
+    nota:'Acelen (Mataripe/BA) e RNEST (PE) atendem parcialmente. Interior vulnerável.',
+    lx:338, ly:140,
+    d:`M 295,8 L 330,18 L 355,38 L 390,45 L 418,68 L 425,100
+       L 418,135 L 400,165 L 378,188 L 352,205 L 325,212
+       L 298,205 L 272,192 L 255,175 L 248,155 L 250,148
+       L 280,140 L 310,130 L 335,118 L 355,100 L 365,68
+       L 355,38 L 330,18 Z` },
+  { id:'centro_oeste',name:'Centro-Oeste',  depImport:.95, diasEstoque:7,  colapsoDias:5,  consumo:2.8,
+    nota:'ZERO refinarias. Maior consumidor do agro. Todo diesel vem do Sudeste ou importação.',
+    lx:195, ly:268,
+    d:`M 128,118 L 155,138 L 185,148 L 215,152 L 248,155
+       L 255,175 L 272,192 L 275,215 L 270,248 L 255,272
+       L 235,292 L 210,308 L 182,315 L 155,305 L 132,285
+       L 115,258 L 108,228 L 110,195 L 120,165 Z` },
+  { id:'sudeste',     name:'Sudeste',       depImport:.18, diasEstoque:15, colapsoDias:22, consumo:5.2,
+    nota:'SP concentra 39% do refino nacional. Mais resiliente. Abastece outras regiões.',
+    lx:330, ly:285,
+    d:`M 272,192 L 298,205 L 325,212 L 352,205 L 378,210
+       L 402,228 L 415,258 L 412,292 L 398,320 L 378,340
+       L 352,352 L 325,348 L 298,332 L 278,308 L 268,280
+       L 262,255 L 268,228 L 275,215 Z` },
+  { id:'sul',         name:'Sul',           depImport:.28, diasEstoque:12, colapsoDias:18, consumo:2.0,
+    nota:'Refap (RS) e Repar (PR) garantem 72% do consumo. Dependência portuária de Paranaguá.',
+    lx:295, ly:400,
+    d:`M 210,308 L 235,292 L 255,272 L 268,280 L 278,308
+       L 298,332 L 325,348 L 352,352 L 368,372 L 360,400
+       L 342,422 L 318,440 L 292,452 L 268,445 L 248,428
+       L 232,405 L 218,378 L 208,348 Z` }
+];
+
+function impactScore(r, importRed, days, strike) {
+  const base = importRed * r.depImport;
+  const stockOut = days > r.diasEstoque;
+  const depletion = stockOut ? Math.min(1,(days-r.diasEstoque)/r.colapsoDias) : 0;
+  let s = base*.45 + depletion*.55;
+  if (strike) s = Math.min(1, s*1.42);
+  return Math.min(1, s);
+}
+
+function impactCol(s)  { return s<.2?'#2E8A50':s<.45?'#CC8020':s<.72?'#C83838':'#5A0000'; }
+function impactLbl(s)  { return s<.2?'ESTÁVEL':s<.45?'ALERTA':s<.72?'ESCASSEZ':'COLAPSO'; }
+function impactTxt(s)  { return s<.2?'var(--green)':s<.45?'var(--amber)':'var(--red)'; }
+
+// ── Draw SVG map ─────────────────────────────────────────
+function buildBrSvg(scores) {
+  const svg = document.getElementById('br-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  // Ocean bg
+  const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  Object.assign(bg, {}); bg.setAttribute('width','420'); bg.setAttribute('height','480');
+  bg.setAttribute('fill','#060B12'); svg.appendChild(bg);
+
+  // Grid lines
+  for (let i=0;i<4;i++){
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',i*105); l.setAttribute('y1',0); l.setAttribute('x2',i*105); l.setAttribute('y2',480);
+    l.setAttribute('stroke','rgba(255,255,255,.025)'); l.setAttribute('stroke-width','.5'); svg.appendChild(l);
+  }
+  for (let i=0;i<5;i++){
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',0); l.setAttribute('y1',i*96); l.setAttribute('x2',420); l.setAttribute('y2',i*96);
+    l.setAttribute('stroke','rgba(255,255,255,.025)'); l.setAttribute('stroke-width','.5'); svg.appendChild(l);
+  }
+
+  SIM_REGIONS.forEach(r => {
+    const s = scores[r.id]||0;
+    const col = impactCol(s);
+
+    // Region path
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', r.d);
+    path.setAttribute('fill', col+'55');
+    path.setAttribute('stroke', col);
+    path.setAttribute('stroke-width', s>.72?'2':'1.5');
+    if(s>.72) path.setAttribute('filter','url(#glow)');
+    svg.appendChild(path);
+
+    // Label name
+    const t1 = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t1.setAttribute('x', r.lx); t1.setAttribute('y', r.ly);
+    t1.setAttribute('text-anchor','middle');
+    t1.setAttribute('font-family','DM Mono,monospace');
+    t1.setAttribute('font-size','9.5'); t1.setAttribute('font-weight','700');
+    t1.setAttribute('fill','rgba(232,228,220,.9)'); t1.setAttribute('letter-spacing','1');
+    t1.setAttribute('pointer-events','none'); t1.textContent = r.name.toUpperCase();
+    svg.appendChild(t1);
+
+    // Status label
+    const t2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t2.setAttribute('x', r.lx); t2.setAttribute('y', r.ly+13);
+    t2.setAttribute('text-anchor','middle');
+    t2.setAttribute('font-family','DM Mono,monospace');
+    t2.setAttribute('font-size','7.5'); t2.setAttribute('font-weight','700');
+    t2.setAttribute('fill',col); t2.setAttribute('pointer-events','none');
+    t2.textContent = impactLbl(s);
+    svg.appendChild(t2);
+  });
+
+  // Compass N
+  const nc = document.createElementNS('http://www.w3.org/2000/svg','text');
+  nc.setAttribute('x','400'); nc.setAttribute('y','25');
+  nc.setAttribute('font-family','DM Mono,monospace'); nc.setAttribute('font-size','13');
+  nc.setAttribute('fill','rgba(200,150,58,.45)'); nc.setAttribute('text-anchor','middle');
+  nc.textContent = 'N ↑'; svg.appendChild(nc);
+
+  // Glow filter
+  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = `<filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  svg.insertBefore(defs, svg.firstChild);
+}
+
+// ── Region list ───────────────────────────────────────────
+function buildRegList(scores) {
+  document.getElementById('reg-list').innerHTML = SIM_REGIONS.map(r => {
+    const s=scores[r.id]||0, col=impactCol(s), lbl=impactLbl(s);
+    const bw=Math.round(s*100);
+    return `<div class="rr">
+      <div class="rr-dot" style="background:${col}"></div>
+      <div class="rr-name">${r.name}</div>
+      <div class="rr-bar-t"><div class="rr-bar" style="width:${bw}%;background:${col}"></div></div>
+      <div class="rr-st" style="color:${col}">${lbl}</div>
+      <div class="rr-days" style="color:${s>.45?'var(--red)':'var(--text-dim)'}">${r.diasEstoque}d estoque</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Timeline ──────────────────────────────────────────────
+function buildTimeline(imp, days, strike) {
+  const m = strike ? .62 : 1;
+  const evs = [
+    { d:1,  t:'Choque de preço nos postos',       det:'Distribuidoras reprecificam estoques antes de qualquer reajuste oficial.', thr:imp>.05 },
+    { d:3,  t:'Norte entra em racionamento',       det:'Reman a 20% + sem importação = postos esgotam em 3 dias.', thr:imp>.2&&days>=3 },
+    { d:5,  t:'Centro-Oeste: agro para',           det:'Zero refinarias + 95% dependência = colheitadeiras sem diesel.', thr:imp>.3&&days>=5 },
+    { d:Math.round(8*m),  t:'Nordeste em alerta',  det:'Interior sem abastecimento. Transporte de alimentos comprometido.', thr:imp>.4&&days>=Math.round(8*m) },
+    { d:Math.round(10*m), t:'Governo declara emergência', det:'ANP aciona estoques estratégicos. Decreto de racionamento.', thr:imp>.5&&days>=Math.round(10*m) },
+    { d:Math.round(14*m), t:'Sul em escassez',     det:'Refap e Repar operam mas demanda supera. Filas nas capitais gaúchas.', thr:imp>.55&&days>=Math.round(14*m) },
+    { d:Math.round(20*m), t:'Sudeste começa a sentir',det:'Mesmo com 6 refinarias, demanda supera produção. SP em alerta.', thr:imp>.65&&days>=Math.round(20*m) },
+    { d:30, t:'Colapso logístico nacional',        det:'Sistema trava. Hospitais, serviços essenciais em risco. IPCA dispara.', thr:imp>.75&&days>=30 },
+  ];
+  const TODAY_DAY = 25; // Dias reais de redução ~60% confirmados pela ANP (mar/2026)
+  let html_tl = '';
+  let todayInserted = false;
+
+  evs.forEach((e,i) => {
+    const on=e.thr;
+    const tc=on?'var(--red)':'var(--text-dim)';
+    const isToday = !todayInserted && (i===evs.length-1 || evs[i+1].d > TODAY_DAY) && e.d <= TODAY_DAY;
+
+    html_tl += `<div class="tl-r" style="${on?'':'opacity:.5'}">
+      <div class="tl-d" style="color:${tc}">D${e.d}</div>
+      <div class="tl-body">
+        <div class="tl-ev" style="color:${on?'var(--text)':'var(--text-dim)'}">
+          ${e.t} ${on?'<span style="font-size:8px;background:var(--green-dim);color:var(--green);padding:1px 5px;border-radius:2px;font-family:DM Mono">✓ OCORREU</span>':''}
+        </div>
+        <div class="tl-dt">${e.det}</div>
+      </div>
+    </div>`;
+
+    // Insert TODAY marker between events
+    const nextDay = i<evs.length-1 ? evs[i+1].d : 999;
+    if (!todayInserted && TODAY_DAY >= e.d && TODAY_DAY < nextDay) {
+      todayInserted = true;
+      html_tl += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;padding:7px 10px;background:rgba(200,150,58,.12);border:1px solid rgba(200,150,58,.4);border-radius:3px">
+        <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold);width:38px;flex-shrink:0">D${TODAY_DAY}</div>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 28/03/2026</div>
+          <div style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-top:2px">
+            ANP confirmou "situação excepcional de risco". 2 das 3 maiores distribuidoras emitiram alertas formais. Decreto 12.875 em vigor. Greve ameaçada mas não confirmada.
+          </div>
+        </div>
+        <div style="font-size:8px;font-weight:700;font-family:'DM Mono';color:var(--gold);background:rgba(200,150,58,.2);padding:3px 8px;border-radius:2px;flex-shrink:0">REAL</div>
+      </div>`;
+    }
+  });
+
+  // If today is beyond all events, append at end
+  if (!todayInserted) {
+    html_tl += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;padding:7px 10px;background:rgba(200,150,58,.12);border:1px solid rgba(200,150,58,.4);border-radius:3px">
+      <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold);width:38px;flex-shrink:0">D${TODAY_DAY}</div>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 28/03/2026</div>
+        <div style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-top:2px">ANP: situação excepcional de risco. Decreto 12.875 ativo.</div>
+      </div>
+      <div style="font-size:8px;font-weight:700;font-family:'DM Mono';color:var(--gold);background:rgba(200,150,58,.2);padding:3px 8px;border-radius:2px;flex-shrink:0">REAL</div>
+    </div>`;
+  }
+
+  document.getElementById('sim-tl').innerHTML = html_tl;
+}
+
+// ── Alert box ─────────────────────────────────────────────
+function buildAlert(imp, days, strike, maxS) {
+  let cls='', t='', b='';
+  if (maxS<.2) {
+    cls='ok'; t='✓ SISTEMA ESTÁVEL';
+    b=`Redução baixa ou curta. Estoques ANP (10d) absorvem o choque. Preços sobem marginalmente.`;
+  } else if (maxS<.45) {
+    cls='warn'; t='⚠ PRESSÃO NO ABASTECIMENTO';
+    b=`${Math.round(imp*100)}% de queda por ${days}d. Norte e Centro-Oeste já sentem. Diesel pode subir R$${(imp*2.5).toFixed(2)}/L. Governo tende a acionar subvenção.`;
+  } else {
+    cls=''; t='🔴 SITUAÇÃO CRÍTICA — INTERVENÇÃO URGENTE';
+    b=`Choque severo (${Math.round(imp*100)}% / ${days}d${strike?' + greve':''}) → escassez em 3+ regiões. ANP deve acionar estoque estratégico. IPCA pode acumular +${(imp*4.5).toFixed(1)}%. Risco sistêmico.`;
+  }
+  document.getElementById('sim-alert').innerHTML = `<div class="sim-alert ${cls}"><div class="sa-t">${t}</div><div class="sa-b">${b}</div></div>`;
+}
+
+// ── Badge ─────────────────────────────────────────────────
+function setBadge(maxS) {
+  const el=document.getElementById('sim-badge');
+  if(maxS<.2){ el.textContent='🟢 CONTROLADO'; el.style.cssText='background:var(--green-dim);border:1px solid var(--green);color:var(--green);font-size:9px;font-weight:700;padding:5px 11px;border-radius:2px;font-family:"DM Mono"'; }
+  else if(maxS<.45){ el.textContent='🟡 ALERTA'; el.style.cssText='background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);font-size:9px;font-weight:700;padding:5px 11px;border-radius:2px;font-family:"DM Mono"'; }
+  else if(maxS<.72){ el.textContent='🔴 CRÍTICO'; el.style.cssText='background:var(--red-dim);border:1px solid var(--red);color:var(--red);font-size:9px;font-weight:700;padding:5px 11px;border-radius:2px;font-family:"DM Mono"'; }
+  else{ el.textContent='💀 COLAPSO'; el.style.cssText='background:#3A0000;border:1px solid #C83838;color:#C83838;font-size:9px;font-weight:700;padding:5px 11px;border-radius:2px;font-family:"DM Mono"'; }
+}
+
+// ── Sliders update ────────────────────────────────────────
+function updateSliders(imp, days, strike) {
+  document.getElementById('sv-imp').textContent  = Math.round(imp*100)+'%';
+  document.getElementById('sv-days').textContent = days+(days==1?' dia':' dias');
+  document.getElementById('sv-greve').textContent= strike?'SIM ⚠':'NÃO';
+  document.getElementById('sv-greve').style.color= strike?'var(--red)':'var(--gold)';
+  // Gradient on range inputs
+  ['sl-imp','sl-days','sl-greve'].forEach(id=>{
+    const el=document.getElementById(id);
+    const pct=((el.value-el.min)/(el.max-el.min)*100).toFixed(1)+'%';
+    const col=id=='sl-imp'?'var(--red)':id=='sl-days'?'var(--amber)':'var(--gold)';
+    el.style.background=`linear-gradient(to right,${col} ${pct},var(--ink-4) ${pct})`;
+  });
+}
+
+// ── Gauges ────────────────────────────────────────────────
+function updateGauges(imp, days, strike) {
+  const vol=(imp*14.7*(days/30)*(strike?1.4:1)).toFixed(1);
+  const ipca=(imp>0.3?imp*4.5*(strike?1.5:1):imp*1.8).toFixed(1);
+  const pib=(imp*1.9*(days/30)*(strike?1.5:1)).toFixed(1);
+  const col=imp>.5?'var(--red)':imp>.2?'var(--amber)':'var(--green)';
+  document.getElementById('gv-diesel').textContent=vol+'bi L'; document.getElementById('gv-diesel').style.color=col;
+  document.getElementById('gv-ipca').textContent='+'+ipca+'%';  document.getElementById('gv-ipca').style.color=col;
+  document.getElementById('gv-pib').textContent='-'+pib+'%';    document.getElementById('gv-pib').style.color=col;
+}
+
+// ── Main run ──────────────────────────────────────────────
+function runSim() {
+  const imp    = +document.getElementById('sl-imp').value/100;
+  const days   = +document.getElementById('sl-days').value;
+  const strike = +document.getElementById('sl-greve').value===1;
+
+  updateSliders(imp, days, strike);
+  updateGauges(imp, days, strike);
+
+  const scores = {};
+  SIM_REGIONS.forEach(r => { scores[r.id]=impactScore(r,imp,days,strike); });
+  const maxS = Math.max(...Object.values(scores));
+
+  buildBrSvg(scores);
+  buildRegList(scores);
+  buildTimeline(imp, days, strike);
+  buildAlert(imp, days, strike, maxS);
+  setBadge(maxS);
+}
+
+function setRealScenario() {
+  document.getElementById('sl-imp').value  = 60;
+  document.getElementById('sl-days').value = 25;
+  document.getElementById('sl-greve').value= 0;
+  runSim();
+  // Scroll timeline to today marker
+  setTimeout(() => {
+    const tl = document.getElementById('sim-tl');
+    const today = tl.querySelector('[style*="ESTAMOS AQUI"]');
+    if (today) today.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 200);
+}
+
+function initSim() {
+  if (simReady) return; simReady=true;
+  setRealScenario(); // Start with real scenario loaded
+}
+
+
+// ═══════════════════════════════════════════════════════
+// GLOBAL PRICE STATE
+// ═══════════════════════════════════════════════════════
+window.PRECO = { brent: 100.9, cambio: 5.72 };
+const PRECO_BASE = { brent: 63.0, cambio: 6.19 };  // start of 2026
+const PB_REFIN   = 3.49;  // Petrobras refinaria diesel atual R$/L
+
+function getParity(brent, cambio) {
+  // Calibrated: at brent=100.9, cambio=5.72 → paridade≈R$5.30/L (Abicom ref.)
+  // Formula: 1 barril = 159L, conversão + frete + custos ≈ fator 0.00918
+  return brent * cambio * 0.00918;
+}
+
+function adjPreco(key, delta) {
+  const el = document.getElementById(key === 'brent' ? 'pb-brent' : 'pb-cambio');
+  el.value = (parseFloat(el.value) + delta).toFixed(key === 'cambio' ? 2 : 1);
+  onPrecoChange();
+}
+
+function setPreco(brent, cambio, preset) {
+  document.getElementById('pb-brent').value  = brent;
+  document.getElementById('pb-cambio').value = cambio.toFixed(2);
+  document.querySelectorAll('.pb-preset').forEach(b => b.classList.remove('active'));
+  const all = document.querySelectorAll('.pb-preset');
+  if (preset==='pre')   all[0].classList.add('active');
+  if (preset==='hoje')  all[1].classList.add('active');
+  if (preset==='base')  all[2].classList.add('active');
+  if (preset==='crise') all[3].classList.add('active');
+  onPrecoChange();
+}
+
+function onPrecoChange() {
+  const brent  = parseFloat(document.getElementById('pb-brent').value)  || 100.9;
+  const cambio = parseFloat(document.getElementById('pb-cambio').value) || 5.72;
+  window.PRECO = { brent, cambio };
+
+  // Deltas vs start-of-year baseline
+  const db = ((brent  - PRECO_BASE.brent)  / PRECO_BASE.brent  * 100).toFixed(0);
+  const dc = ((cambio - PRECO_BASE.cambio) / PRECO_BASE.cambio * 100).toFixed(0);
+  const dEl = (id, val) => {
+    const el = document.getElementById(id);
+    const up = +val >= 0;
+    el.textContent = (up?'+':'')+val+'%';
+    el.style.background = up ? 'var(--red-dim)' : 'var(--green-dim)';
+    el.style.color = up ? 'var(--red)' : 'var(--green)';
+  };
+  dEl('pb-brent-delta', db);
+  dEl('pb-cambio-delta', dc);
+
+  // Paridade & defasagem
+  const par = getParity(brent, cambio);
+  const def = ((par - PB_REFIN) / PB_REFIN * 100).toFixed(0);
+  document.getElementById('pb-parity').textContent = 'R$' + par.toFixed(2) + '/L';
+  const defEl = document.getElementById('pb-defasagem');
+  defEl.textContent = 'Petrobras ' + def + '% abaixo da paridade';
+  defEl.style.color = def > 40 ? 'var(--red)' : def > 20 ? 'var(--amber)' : 'var(--green)';
+
+  // Scenario pill
+  const score = (brent/100)*(cambio/5.72);
+  const sp = document.getElementById('pb-scenario');
+  if      (score < 0.65) { sp.textContent='✓ BAIXO CUSTO'; sp.style.background='var(--green-dim)'; sp.style.color='var(--green)'; }
+  else if (score < 0.90) { sp.textContent='◎ NEUTRO';      sp.style.background='var(--gold-dim)';  sp.style.color='var(--gold)'; }
+  else if (score < 1.20) { sp.textContent='⚠ CUSTO ALTO';  sp.style.background='var(--amber-dim)'; sp.style.color='var(--amber)'; }
+  else                   { sp.textContent='🔴 CRISE';       sp.style.background='var(--red-dim)';   sp.style.color='var(--red)'; }
+
+  // Propagate to tabs
+  updateDashPrecos(brent, cambio);
+  if (simReady) updateSimPrecos(brent, cambio);
+  if (invReady) updateInvPrecos(brent, cambio);
+}
+
+// ─── Tab 1: Oferta & Demanda recalc ──────────────────────
+function updateDashPrecos(brent, cambio) {
+  // Diesel price KPI
+  const dieselBomba = (PB_REFIN + getParity(brent, cambio) * 0.32 + 2.10).toFixed(2); // simplified model
+  const el = document.querySelector('#st-ov .card.danger .cval');
+  if (el) el.innerHTML = 'R$' + dieselBomba + '<span class="cunit">/L</span>';
+
+  // Delta on diesel card
+  const pct = ((parseFloat(dieselBomba) - 6.80) / 6.80 * 100).toFixed(1);
+  const deltaEl = document.querySelector('#st-ov .card.danger .cdelta');
+  if (deltaEl) {
+    const up = +pct >= 0;
+    deltaEl.className = 'cdelta ' + (up ? 'ddown' : 'dup');
+    deltaEl.textContent = (up?'▲ +':'▼ ')+Math.abs(pct)+'% vs hoje';
+  }
+
+  // Tesoura: update last paridade point
+  const tCanvas = document.getElementById('c-tesoura');
+  if (tCanvas && window.DADOS_SETOR) {
+    const newPP = getParity(brent, cambio);
+    const lastPt = window.DADOS_SETOR.tesoura[window.DADOS_SETOR.tesoura.length-1];
+    const orig = lastPt.pp;
+    lastPt.pp = newPP;
+    drawTesouraInv(window.DADOS_SETOR);
+    lastPt.pp = orig; // restore after draw if needed — actually keep new value
+    lastPt.pp = newPP;
+  }
+}
+
+// ─── Tab 3: Empresas recalc ───────────────────────────────
+function updateInvPrecos(brent, cambio) {
+  const D = window.DADOS_SETOR;
+  if (!D) return;
+  const bFactor = brent / 100.9;   // ratio to current baseline
+  const cFactor = cambio / 5.72;
+
+  // Update each company's price targets in cenarios based on sensitivities
+  const mults = {
+    PETR4:  bFactor * 0.55 + cFactor * 0.45,  // partial: E&P gain, downstream pain
+    PRIO3:  bFactor * 0.85 + cFactor * 0.15,  // pure E&P
+    RECV3:  bFactor * 0.80 + cFactor * 0.20,  // pure E&P onshore
+    RAIZ4:  1 / (bFactor * 0.3 + 0.7),        // inverse: high brent hurts distribution
+    UGPA3:  1 / (bFactor * 0.35 + 0.65),      // inverse
+    VBBR3:  1 / (bFactor * 0.40 + 0.60),      // inverse, most exposed
+    BRKM5:  1 / (bFactor * 0.70 + 0.30),      // inverse, nafta
+  };
+
+  // Update price display for currently visible company
+  const activeCo = document.querySelector('.co-btn.active');
+  if (activeCo) {
+    const ticker = activeCo.dataset.tk;
+    if (ticker && D.empresas[ticker] && mults[ticker]) {
+      const mult = mults[ticker];
+      // Update current price projection in the detail view
+      const priceEl = document.querySelector('#co-detail .ck-v');
+      if (priceEl) {
+        const adjPrice = (D.empresas[ticker].preco * mult).toFixed(2);
+        const sign = mult >= 1 ? '+' : '';
+        priceEl.innerHTML = `R$${adjPrice} <span style="font-size:10px;font-family:'DM Mono';color:${mult>=1?'var(--green)':'var(--red)'}">(${sign}${((mult-1)*100).toFixed(0)}%)</span>`;
+      }
+    }
+  }
+
+  // Update sensitivity canvas
+  if (document.getElementById('sens-canvas')) drawSensBar(D);
+
+  // Update quadrant with Brent label
+  const qc = document.getElementById('quad-canvas');
+  if (qc) {
+    drawQuadrant(D);
+    // Add Brent annotation
+    const ct = qc.getContext('2d');
+    const W = cW('quad-canvas'), H = cH('quad-canvas');
+    ct.fillStyle = 'rgba(200,150,58,.7)';
+    ct.font = 'bold 9px "DM Mono"';
+    ct.textAlign = 'left';
+    ct.fillText(`Brent US$${brent} · USD R$${cambio}`, 10, 18);
+  }
+}
+
+// ─── Tab 4: Simulator recalc ──────────────────────────────
+function updateSimPrecos(brent, cambio) {
+  // Recalculate import cost per liter
+  const importCostPerL = getParity(brent, cambio);  // R$/L import parity
+  // IPCA and PIB scale with import cost vs baseline
+  const costRatio = importCostPerL / getParity(100.9, 5.72);
+
+  // Update gauges if sim is active
+  const imp    = +document.getElementById('sl-imp').value / 100;
+  const days   = +document.getElementById('sl-days').value;
+  const strike = +document.getElementById('sl-greve').value === 1;
+
+  const vol   = (imp * 14.7 * (days/30) * (strike?1.4:1)).toFixed(1);
+  const ipca  = (imp > 0.3 ? imp*4.5*costRatio*(strike?1.5:1) : imp*1.8*costRatio).toFixed(1);
+  const pib   = (imp * 1.9 * (days/30) * costRatio * (strike?1.5:1)).toFixed(1);
+  const col   = imp > .5 ? 'var(--red)' : imp > .2 ? 'var(--amber)' : 'var(--green)';
+
+  const gd = document.getElementById('gv-diesel');
+  const gi = document.getElementById('gv-ipca');
+  const gp = document.getElementById('gv-pib');
+  if (gd) { gd.textContent = vol+'bi L'; gd.style.color = col; }
+  if (gi) { gi.textContent = '+'+ipca+'%'; gi.style.color = col; }
+  if (gp) { gp.textContent = '-'+pib+'%'; gp.style.color = col; }
+}
+
+initMap();
+
+// ─── SUBTAB NAV ──────────────────────────────────────────────
+function setSt(id, btn) {
+  document.querySelectorAll('.stpanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.st').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// ─── ANIMATE BARS ON LOAD ────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.bfill,.rfill').forEach(f => {
+      const t = f.style.width; f.style.width = '0%';
+      setTimeout(() => { f.style.width = t; }, 50);
+    });
+  }, 100);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// MAP DATA & LOGIC
+// ═══════════════════════════════════════════════════════════════
+const RC = { critical:'#C83838', high:'#CC8020', moderate:'#C8963A', low:'#2E8A50' };
+const SANTOS = [-46.33, -23.95];
+let mapReady = false, activeFilter = 'all', routeEls = {};
+
+const ROUTES = [
+  { id:'saudi', name:'Arábia Saudita', flag:'🇸🇦', type:'crude',
+    share:'22,2% do cru importado', shareN:22.2, risk:'critical', riskLbl:'CRÍTICO',
+    chokes:['hormuz','cape'], product:'Petróleo Cru (sour/médio)', w:4.4, spd:'sc',
+    desc:'Atravessa Hormuz (bloqueado desde 28/02/2026). Alternativa pelo Cabo da Boa Esperança adiciona 12–15 dias.',
+    pts:[[50.1,26.6],[56.5,26.0],[58.5,22.0],[63.0,15.0],[65.0,5.0],[60.0,-2.0],[50.0,-12.0],[38.0,-27.0],[25.0,-33.0],[18.5,-34.4],[10.0,-30.0],[0.0,-26.0],[-12.0,-25.0],[-28.0,-24.0],[-40.0,-23.95],[-46.33,-23.95]]
+  },
+  { id:'russia', name:'Rússia', flag:'🇷🇺', type:'refined',
+    share:'50-74% diesel importado (EM RISCO)', shareN:17, risk:'critical', riskLbl:'CRÍTICO',
+    chokes:['bosphorus','gibraltar'], product:'Diesel S-10 & Gasolina', w:4.0, spd:'sc',
+    desc:'ROTA EM COLAPSO — Proibição de exportação de gasolina a partir de 01/04/2026. Drones ucranianos destruíram 17% da capacidade de refino russa. EUA retiraram sanções em 12/03 e passaram a competir pelo mesmo diesel russo que o Brasil comprava com desconto.',
+    pts:[[37.8,44.7],[29.1,41.1],[27.0,40.3],[26.0,39.5],[25.0,38.0],[23.0,36.5],[15.0,35.8],[8.0,37.0],[2.0,36.8],[-3.0,36.2],[-5.4,35.9],[-10.0,33.5],[-15.5,25.0],[-21.0,15.0],[-26.0,5.0],[-30.0,-10.0],[-38.0,-20.0],[-46.33,-23.95]]
+  },
+  { id:'usa', name:'Estados Unidos', flag:'🇺🇸', type:'both',
+    share:'16,7% (cru) + 13% (derivados)', shareN:16.7, risk:'low', riskLbl:'BAIXO',
+    chokes:[], product:'Petróleo Cru WTI leve + Derivados', w:3.5, spd:'sl',
+    desc:'Rota inteiramente no Atlântico. Sem chokepoints críticos. Principal fonte de petróleo leve para blending.',
+    pts:[[-95.0,29.5],[-87.0,22.5],[-80.0,17.0],[-75.0,10.0],[-65.0,5.0],[-55.0,1.0],[-50.0,-7.0],[-48.0,-16.0],[-46.33,-23.95]]
+  },
+  { id:'angola', name:'Angola', flag:'🇦🇴', type:'crude',
+    share:'11,6% do cru importado', shareN:11.6, risk:'low', riskLbl:'BAIXO',
+    chokes:[], product:'Petróleo Cru médio', w:3.0, spd:'sl',
+    desc:'Rota curta no Atlântico Sul. Sem chokepoints. Parceira histórica do Brasil no comércio de cru africano.',
+    pts:[[13.2,-8.8],[8.0,-14.0],[2.0,-19.0],[-8.0,-22.0],[-22.0,-23.5],[-38.0,-23.8],[-46.33,-23.95]]
+  },
+  { id:'guyana', name:'Guiana', flag:'🇬🇾', type:'crude',
+    share:'9,9% do cru importado', shareN:9.9, risk:'low', riskLbl:'BAIXO',
+    chokes:[], product:'Petróleo Cru leve offshore', w:2.5, spd:'sl',
+    desc:'Vizinho na costa nordeste da América do Sul. Rota mais curta. Produção offshore em crescimento acelerado.',
+    pts:[[-58.2,6.8],[-56.0,3.0],[-52.0,-3.0],[-49.5,-13.0],[-46.33,-23.95]]
+  },
+  { id:'algeria', name:'Argélia', flag:'🇩🇿', type:'crude',
+    share:'8,4% do cru importado', shareN:8.4, risk:'moderate', riskLbl:'MODERADO',
+    chokes:['gibraltar'], product:'Petróleo Cru leve + Condensados', w:2.0, spd:'sm',
+    desc:'Mediterrâneo → Gibraltar → Atlântico Sul. Petróleo leve ideal para maximização de gasolina.',
+    pts:[[3.2,36.7],[0.5,37.2],[-3.5,36.5],[-5.4,35.9],[-11.0,32.0],[-18.0,20.0],[-23.0,10.0],[-28.0,0.0],[-32.0,-12.0],[-40.0,-21.0],[-46.33,-23.95]]
+  },
+  { id:'uae', name:'Emirados Árabes', flag:'🇦🇪', type:'refined',
+    share:'9% dos derivados importados', shareN:8, risk:'critical', riskLbl:'CRÍTICO',
+    chokes:['bab','cape'], product:'Derivados refinados', w:2.0, spd:'sc',
+    desc:'Fujairah (exterior ao Hormuz) → Índico → Bab el-Mandeb (Houthi) → Cabo da Boa Esperança → Atlântico.',
+    pts:[[56.3,25.1],[60.0,22.0],[65.0,12.0],[63.0,5.0],[55.0,-5.0],[46.0,-12.0],[38.0,-25.0],[25.0,-33.0],[18.5,-34.4],[8.0,-30.0],[-5.0,-27.0],[-22.0,-25.0],[-40.0,-23.95],[-46.33,-23.95]]
+  }
+];
+
+const CHOKES = [
+  { id:'hormuz', name:'Estreito de Hormuz', coords:[56.3,26.5], cls:'blocked', lbl:'BLOQUEADO', color:'#C83838', detail:'20M bpd — 20% do petróleo mundial. Fechado pelo Irã desde 28/02/2026.' },
+  { id:'bab', name:'Bab el-Mandeb', coords:[43.3,12.5], cls:'watch', lbl:'ALERTA', color:'#CC8020', detail:'Acesso ao Suez. Ataques Houthi ativos desde 2024.' },
+  { id:'suez', name:'Canal de Suez', coords:[32.3,30.5], cls:'watch', lbl:'ALERTA', color:'#CC8020', detail:'10% do comércio global. Tráfego reduzido por tensões regionais.' },
+  { id:'bosphorus', name:'Bósforo', coords:[29.1,41.1], cls:'ok', lbl:'OPERACIONAL', color:'#2E8A50', detail:'Saída do Mar Negro. Controlado pela Turquia. Rota do diesel russo.' },
+  { id:'gibraltar', name:'Gibraltar', coords:[-5.4,35.9], cls:'ok', lbl:'OPERACIONAL', color:'#2E8A50', detail:'Saída Mediterrâneo → Atlântico. OTAN. Rota do diesel russo e cru argelino.' },
+  { id:'cape', name:'Cabo da Boa Esperança', coords:[18.5,-34.4], cls:'alt', lbl:'ROTA ALT.', color:'#3A82C0', detail:'Alternativa ao Suez após fechamento Hormuz. +12-15 dias.' },
+  { id:'novorossiysk', name:'Novorossiysk (Rússia)', coords:[37.8,44.7], cls:'blocked', lbl:'EXPORTAÇÃO SUSPENSA', color:'#C83838', detail:'Principal porto de exportação de diesel russo. Proibição de exportação de gasolina a partir de 01/04/2026. Drones ucranianos destruíram 17% da capacidade de refino russa.' },
+  { id:'ukraine_drones', name:'Zona de Drones Ucranianos', coords:[33.0,48.0], cls:'blocked', lbl:'INFRAESTRUTURA DESTRUÍDA', color:'#C83838', detail:'Ataques de drones ucranianos destruíram refinarias russas equivalentes a 1,1M bpd de capacidade — 17% do total russo.' }
+];
+
+function isVisible(r) {
+  return activeFilter === 'all' ||
+    (activeFilter === 'crude' && (r.type === 'crude' || r.type === 'both')) ||
+    (activeFilter === 'refined' && (r.type === 'refined' || r.type === 'both'));
+}
+
+function hlRoute(id) {
+  ROUTES.forEach(r => {
+    const e = routeEls[r.id]; if (!e) return;
+    if (r.id === id) {
+      e.base.attr('stroke-opacity', 1).attr('stroke-width', r.w * 1.6);
+      e.anim.attr('stroke-opacity', 1).attr('stroke-width', r.w);
+    } else {
+      e.base.attr('stroke-opacity', .05);
+      e.anim.attr('stroke-opacity', .05);
+    }
+  });
+  document.querySelectorAll('.ri').forEach(el => el.classList.toggle('hl', el.dataset.id === id));
+}
+
+function clearHl() {
+  ROUTES.forEach(r => {
+    const e = routeEls[r.id]; if (!e) return;
+    const v = isVisible(r);
+    e.base.attr('stroke-opacity', v ? .45 : .04).attr('stroke-width', r.w);
+    e.anim.attr('stroke-opacity', v ? .75 : .04).attr('stroke-width', r.w * .65);
+  });
+  document.querySelectorAll('.ri').forEach(el => el.classList.remove('hl'));
+}
+
+function applyFilter() {
+  ROUTES.forEach(r => {
+    const e = routeEls[r.id]; if (!e) return;
+    const v = isVisible(r);
+    e.base.attr('stroke-opacity', v ? .45 : .04);
+    e.anim.attr('stroke-opacity', v ? .75 : .04);
+    const li = document.querySelector(`.ri[data-id="${r.id}"]`);
+    if (li) li.style.opacity = v ? '1' : '.25';
+  });
+}
+
+function showMTT(ev, data, isRoute) {
+  const tt = document.getElementById('mtt');
+  const color = isRoute ? RC[data.risk] : data.color;
+  if (isRoute) {
+    const chokesHtml = data.chokes.map(cid => {
+      const c = CHOKES.find(x => x.id === cid);
+      return c ? `<span class="mtt-ck" style="background:${c.color}25;color:${c.color}">${c.name}</span>` : '';
+    }).join('');
+    tt.innerHTML = `<div class="mtt-title" style="color:${color}">${data.flag} ${data.name}</div>
+      <div class="mtt-row"><span class="mtt-lbl">PARTICIPAÇÃO</span><span class="mtt-val">${data.share}</span></div>
+      <div class="mtt-row"><span class="mtt-lbl">TIPO</span><span class="mtt-val">${data.type === 'crude' ? 'Petróleo Cru' : data.type === 'refined' ? 'Derivados' : 'Cru + Derivados'}</span></div>
+      <div class="mtt-row"><span class="mtt-lbl">RISCO</span><span class="mtt-val" style="color:${color}">${data.riskLbl}</span></div>
+      ${data.chokes.length ? `<div class="mtt-chokes">${chokesHtml}</div>` : ''}
+      <div class="mtt-sep"></div><div class="mtt-desc">${data.desc}</div>`;
+  } else {
+    tt.innerHTML = `<div class="mtt-title" style="color:${color}">${data.name}</div>
+      <div class="mtt-row"><span class="mtt-lbl">STATUS</span><span class="mtt-val" style="color:${color}">${data.lbl}</span></div>
+      <div class="mtt-sep"></div><div class="mtt-desc">${data.detail}</div>`;
+  }
+  tt.style.display = 'block'; moveMTT(ev);
+}
+
+function moveMTT(ev) {
+  const wrap = document.getElementById('map-wrap');
+  const rect = wrap.getBoundingClientRect();
+  const tt = document.getElementById('mtt');
+  let x = ev.clientX - rect.left + 14, y = ev.clientY - rect.top - 20;
+  if (x + 258 > wrap.clientWidth) x = ev.clientX - rect.left - 262;
+  if (y + 220 > wrap.clientHeight) y = ev.clientY - rect.top - 230;
+  tt.style.left = x + 'px'; tt.style.top = y + 'px';
+}
+
+function hideMTT() { document.getElementById('mtt').style.display = 'none'; }
+
+async function initMap() {
+  if (mapReady) return;
+
+  // build route list
+  const rl = document.getElementById('rlist');
+  ROUTES.forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'ri'; el.dataset.id = r.id;
+    el.innerHTML = `<div class="ri-dot" style="background:${RC[r.risk]}"></div>
+      <div class="ri-info"><div class="ri-name">${r.flag} ${r.name}</div><div class="ri-sub">${r.share}</div></div>
+      <div class="ri-badge" style="background:${RC[r.risk]}28;color:${RC[r.risk]}">${r.riskLbl}</div>`;
+    el.addEventListener('mouseenter', () => hlRoute(r.id));
+    el.addEventListener('mouseleave', clearHl);
+    rl.appendChild(el);
+  });
+
+  // build chokepoint list
+  const cl = document.getElementById('clist');
+  CHOKES.forEach(c => {
+    const el = document.createElement('div'); el.className = 'ci';
+    el.innerHTML = `<div class="ci-name">${c.name}</div>
+      <div class="ci-badge" style="background:${c.color}28;color:${c.color}">${c.lbl}</div>
+      <div class="ci-detail">${c.detail}</div>`;
+    cl.appendChild(el);
+  });
+
+  // filter tabs
+  document.querySelectorAll('.ft').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.ft').forEach(b => b.classList.remove('on'));
+      this.classList.add('on');
+      activeFilter = this.dataset.f;
+      applyFilter();
+    });
+  });
+
+  const wrap = document.getElementById('map-wrap');
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const svg = d3.select('#gmap').attr('viewBox', `0 0 ${W} ${H}`);
+
+  const proj = d3.geoNaturalEarth1().scale(W / 6.4).translate([W / 2, H / 2]).rotate([20, 0, 0]);
+  const gPath = d3.geoPath().projection(proj);
+
+  const lG = svg.append('g'), lR = svg.append('g'), lC = svg.append('g'), lM = svg.append('g');
+
+  lG.append('path').datum({type:'Sphere'}).attr('class','sphere').attr('d',gPath);
+  lG.append('path').datum(d3.geoGraticule()()).attr('class','graticule').attr('d',gPath);
+
+  let world;
+  try {
+    world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+  } catch(e) {
+    document.getElementById('mloading').innerHTML =
+      '<div style="color:var(--red);font-family:\'DM Mono\';font-size:12px;padding:20px;text-align:center">ERRO AO CARREGAR MAPA.<br>Verifique a conexão.</div>';
+    return;
+  }
+
+  const srcMap = { 682:'saudi',643:'russia',840:'usa',24:'angola',328:'guyana',12:'algeria',784:'uae',76:'brazil' };
+
+  lG.selectAll('.land')
+    .data(topojson.feature(world, world.objects.countries).features)
+    .join('path')
+    .attr('class', d => { const n = +d.id; if (n===76) return 'land brazil'; if (srcMap[n]) return `land land-${srcMap[n]}`; return 'land'; })
+    .attr('d', gPath)
+    .style('fill', d => { const rid = srcMap[+d.id]; if (!rid || rid==='brazil') return null; const r = ROUTES.find(x => x.id===rid); return r ? `${RC[r.risk]}18` : null; });
+
+  ROUTES.forEach(r => {
+    const geo = {type:'Feature',geometry:{type:'LineString',coordinates:r.pts}};
+    const color = RC[r.risk];
+    const base = lR.append('path').datum(geo).attr('class','rt-base').attr('d',gPath)
+      .attr('stroke',color).attr('stroke-width',r.w).attr('stroke-opacity',.45);
+    const anim = lR.append('path').datum(geo).attr('class',`rt-anim ${r.spd}`).attr('d',gPath)
+      .attr('stroke',color).attr('stroke-width',r.w*.65).attr('stroke-opacity',.75);
+    routeEls[r.id] = {base, anim, w:r.w};
+    base.on('mouseenter', ev => { hlRoute(r.id); showMTT(ev,r,true); })
+        .on('mousemove', moveMTT).on('mouseleave', () => { clearHl(); hideMTT(); });
+  });
+
+  CHOKES.forEach(c => {
+    const [cx,cy] = proj(c.coords);
+    if (!cx||!cy||isNaN(cx)||isNaN(cy)) return;
+    const g = lC.append('g').attr('transform',`translate(${cx},${cy})`);
+    g.append('circle').attr('class',`ck-pulse ${c.cls}`).attr('r',6).style('stroke',c.color);
+    g.append('circle').attr('r', c.cls==='blocked'?5.5:4)
+      .style('fill',c.color).style('stroke','#060B12').style('stroke-width',1.2).style('cursor','pointer');
+    g.append('text').attr('x',8).attr('y',4)
+      .style('font-family',"'DM Mono',monospace").style('font-size','8px').style('font-weight','700')
+      .style('fill',c.color).style('letter-spacing','.06em')
+      .text((c.cls==='blocked'?'⊘ ':c.cls==='watch'?'⚠ ':'')+c.name.split(' ').slice(-1)[0].toUpperCase());
+    g.on('mouseenter', ev => showMTT(ev,c,false)).on('mousemove',moveMTT).on('mouseleave',hideMTT);
+  });
+
+  ROUTES.forEach(r => {
+    const [mx,my] = proj(r.pts[0]);
+    if (!mx||!my||isNaN(mx)||isNaN(my)) return;
+    const g = lM.append('g').attr('transform',`translate(${mx},${my})`).style('cursor','pointer');
+    g.append('circle').attr('r',4.5).style('fill',RC[r.risk]).style('stroke','#060B12').style('stroke-width',1.5);
+    g.append('text').attr('x',7).attr('y',4).style('font-family',"'DM Mono',monospace").style('font-size','9px').style('fill',RC[r.risk]).text(r.flag);
+    g.on('mouseenter', ev => { hlRoute(r.id); showMTT(ev,r,true); }).on('mousemove',moveMTT).on('mouseleave',()=>{clearHl();hideMTT();});
+  });
+
+  const [bx,by] = proj(SANTOS);
+  const brG = lM.append('g').attr('transform',`translate(${bx},${by})`);
+  [24,16,10].forEach((r,i)=>brG.append('circle').attr('r',r).style('fill','none').style('stroke','#C8963A').style('stroke-width',.4).style('opacity',.04+i*.04));
+  brG.append('circle').attr('class','br-ring').attr('r',14).style('stroke-width',1);
+  brG.append('circle').attr('r',6.5).style('fill','#C8963A').style('stroke','#060B12').style('stroke-width',2);
+  brG.append('text').attr('x',11).attr('y',-8).style('font-family',"'Bebas Neue',sans-serif").style('font-size','10px').style('fill','#C8963A').style('letter-spacing','.05em').text('SANTOS · SP');
+  brG.append('text').attr('x',11).attr('y',3).style('font-family',"'DM Mono',monospace").style('font-size','7px').style('fill','rgba(200,150,58,.55)').text('DESTINO PRINCIPAL');
+
+  document.getElementById('mloading').style.display = 'none';
+  mapReady = true;
+}
+</script>
+</body>
+</html>
