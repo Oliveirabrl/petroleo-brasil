@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OS CAPITAL — Petróleo Brasil 2026</title>
+<title>Petróleo Brasil 2026 — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script>
 // ══════════════════════════════════════════════════════
@@ -21,23 +21,23 @@ window.DADOS_SETOR = {
 
   // ── METADADOS ─────────────────────────────────────────────
   meta: {
-    atualizadoEm: "28/03/2026",
-    proximaRevisao: "04/04/2026",
-    brent: 100.9,          // USD/bbl
+    atualizadoEm: "30/03/2026",
+    proximaRevisao: "06/04/2026",
+    brent: 114.8,          // USD/bbl — atualizado 30/03/2026
     brentAnterior: 63.0,   // USD/bbl — início de 2026 (para delta)
-    cambio: 5.72,           // BRL/USD
+    cambio: 5.24,           // BRL/USD — real valorizado com adiamento ataques EUA/Irã
     ibov: 132500,
-    cenarioGlobal: "critico",  // ok | alerta | critico
+    cenarioGlobal: "critico",  // ok | alerta | critico — ESCALADA 30/03
     alertas: [
-      "Hormuz bloqueado desde 28/02/2026 — 20% do petróleo mundial sem rota",
-      "Rússia proíbe exportação de gasolina a partir de 01/04/2026",
-      "EUA retirou sanções ao diesel russo — concorre diretamente com o Brasil",
-      "Ucrânia destruiu 17% da capacidade de refino russa (drones)",
-      "Brent +49% desde jan/26 · Diesel 52% abaixo da paridade PPI",
-      "Greve caminhoneiros ativa — Brasil depende 63% do modal rodoviário"
+      "Hormuz bloqueado desde 28/02/2026 — Brent +82% desde jan/26 a US$114,80",
+      "Trump ameaça destruir poços iranianos e Ilha de Kharg — Brent recorde mensal +55%",
+      "Rússia proíbe exportação de gasolina a partir de 01/04/2026 (amanhã)",
+      "EUA retirou sanções ao diesel russo — disputa direta com Brasil pelo produto",
+      "Paridade PPI diesel sobe para R$6,20/L — defasagem Petrobras agora 78%",
+      "ANP: situação excepcional de risco ativa — Dia 27 do choque de importações"
     ],
     // Contexto narrativo — atualizar a cada ciclo
-    narrativa: "TRIPLO CHOQUE DE OFERTA — O Brasil enfrenta simultaneamente três cortes de fornecimento de diesel: (1) Hormuz bloqueado pelo Irã desde 28/02/2026, interrompendo rotas do Golfo Pérsico; (2) Rússia — que respondia por 50-74% das importações de diesel brasileiro — proibindo exportações de gasolina a partir de 01/04 e com refinarias destruídas por drones ucranianos (–17% capacidade); (3) EUA retirando sanções ao diesel russo em 12/03/2026, entrando em competição direta com o Brasil pelo mesmo produto com desconto. O que era um 'oceano azul' de diesel russo barato virou arena de disputa global. Quem pagar mais, leva."
+    narrativa: "TRIPLO CHOQUE — ESCALADA. Trump ameaçou destruir poços de petróleo iranianos e a Ilha de Kharg em 30/03/2026, levando o Brent a US$114,80 — alta de +82% desde janeiro. O mês de março 2026 registra a maior valorização mensal do petróleo desde 1990 (+55%). Para o Brasil: paridade PPI do diesel sobe para R$6,20/L (defasagem Petrobras agora em 78%); Rússia proíbe exportações de gasolina a partir de amanhã (01/04); EUA disputam o mesmo diesel russo que abastecia o Brasil. Dia 27 do choque de importações com queda de 60%."
   },
 
   // ── PARÂMETROS DE SENSIBILIDADE GLOBAL ────────────────────
@@ -506,7 +506,7 @@ window.DADOS_SETOR = {
     { l:"Dez/24", pb:3.27, pp:3.75 }, { l:"Mar/25", pb:3.27, pp:3.82 },
     { l:"Mai/25", pb:3.11, pp:3.65 }, { l:"Set/25", pb:3.11, pp:3.72 },
     { l:"Dez/25", pb:3.11, pp:3.80 }, { l:"Jan/26", pb:3.11, pp:3.88 },
-    { l:"Mar/26", pb:3.49, pp:5.30 }
+    { l:"Mar/26", pb:3.49, pp:6.20 }
   ],
 
   // ── CATALISADORES SETORIAIS ──────────────────────────────
@@ -928,7 +928,7 @@ input.pb-num:focus{color:var(--gold)}
   <!-- ── TOP BAR ── -->
   <div id="topbar">
     <div class="brand">
-      <span class="b-os">OS</span><div class="b-bar"></div><span class="b-cap">CAPITAL</span>
+      <span class="b-os" style="font-family:'Bebas Neue';font-size:16px;letter-spacing:.08em;color:var(--text)">PETRÓLEO BRASIL</span>
     </div>
     <div id="nav">
       <button class="nav-btn active" data-page="dash" onclick="setPage('dash',this)">
@@ -956,7 +956,7 @@ input.pb-num:focus{color:var(--gold)}
       </div>
       <div class="pb-input-wrap">
         <button class="pb-btn" onclick="adjPreco('brent',-1)">−</button>
-        <input class="pb-num" id="pb-brent" type="number" value="100.9" step="0.5" min="30" max="200" oninput="onPrecoChange()">
+        <input class="pb-num" id="pb-brent" type="number" value="114.8" step="0.5" min="30" max="200" oninput="onPrecoChange()">
         <button class="pb-btn" onclick="adjPreco('brent',+1)">+</button>
       </div>
       <div class="pb-delta" id="pb-brent-delta"></div>
@@ -970,7 +970,7 @@ input.pb-num:focus{color:var(--gold)}
       </div>
       <div class="pb-input-wrap">
         <button class="pb-btn" onclick="adjPreco('cambio',-0.05)">−</button>
-        <input class="pb-num" id="pb-cambio" type="number" value="5.72" step="0.05" min="3" max="12" oninput="onPrecoChange()">
+        <input class="pb-num" id="pb-cambio" type="number" value="5.24" step="0.05" min="3" max="12" oninput="onPrecoChange()">
         <button class="pb-btn" onclick="adjPreco('cambio',+0.05)">+</button>
       </div>
       <div class="pb-delta" id="pb-cambio-delta"></div>
@@ -981,7 +981,7 @@ input.pb-num:focus{color:var(--gold)}
     <div class="pb-presets">
       <span style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-right:2px">CENÁRIOS:</span>
       <button class="pb-preset" onclick="setPreco(63,6.19,'pre')">Início 2026<br>$63 · R$6,19</button>
-      <button class="pb-preset active" onclick="setPreco(100.9,5.72,'hoje')">Hoje (28/03)<br>$100,9 · R$5,72</button>
+      <button class="pb-preset active" onclick="setPreco(114.8,5.24,'hoje')">Hoje (30/03)<br>$114,8 · R$5,24</button>
       <button class="pb-preset" onclick="setPreco(75,5.50,'base')">Base (paz)<br>$75 · R$5,50</button>
       <button class="pb-preset" onclick="setPreco(130,6.50,'crise')">Crise máxima<br>$130 · R$6,50</button>
     </div>
@@ -1352,7 +1352,7 @@ input.sim-range.g::-webkit-slider-thumb{background:var(--gold)}
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;flex-shrink:0">
             <div id="sim-badge"></div>
-            <button onclick="setRealScenario()" style="background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-size:8px;font-weight:700;padding:4px 10px;border-radius:2px;font-family:'DM Mono';cursor:pointer;white-space:nowrap">📍 CARREGAR CENÁRIO REAL (28/03/26)</button>
+            <button onclick="setRealScenario()" style="background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);font-size:8px;font-weight:700;padding:4px 10px;border-radius:2px;font-family:'DM Mono';cursor:pointer;white-space:nowrap">📍 CARREGAR CENÁRIO REAL (30/03/26)</button>
           </div>
         </div>
 
@@ -1428,7 +1428,7 @@ input.sim-range.g::-webkit-slider-thumb{background:var(--gold)}
 
   <!-- ── FOOTER ── -->
   <div id="footer">
-    <div class="f-brand"><span class="f-os">OS</span><div class="f-bar"></div><span>CAPITAL</span></div>
+    <div class="f-brand" style="font-family:'Bebas Neue';font-size:13px;letter-spacing:.08em;color:var(--text-dim)">PETRÓLEO BRASIL 2026</div>
     <div class="f-src">FONTES: ANP · PETROBRAS · IBP · EPE · STONEX · CNT · EIA · IEA · KPLER · VORTEXA · INEEP · STATISTA · TRADEINT · MDIC</div>
     <div class="f-date">MARÇO 2026</div>
   </div>
@@ -1909,7 +1909,7 @@ function buildTimeline(imp, days, strike) {
     { d:Math.round(20*m), t:'Sudeste começa a sentir',det:'Mesmo com 6 refinarias, demanda supera produção. SP em alerta.', thr:imp>.65&&days>=Math.round(20*m) },
     { d:30, t:'Colapso logístico nacional',        det:'Sistema trava. Hospitais, serviços essenciais em risco. IPCA dispara.', thr:imp>.75&&days>=30 },
   ];
-  const TODAY_DAY = 25; // Dias reais de redução ~60% confirmados pela ANP (mar/2026)
+  const TODAY_DAY = 27; // Dia 27 confirmado — dados ANP 30/03/2026
   let html_tl = '';
   let todayInserted = false;
 
@@ -1935,7 +1935,7 @@ function buildTimeline(imp, days, strike) {
       html_tl += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;padding:7px 10px;background:rgba(200,150,58,.12);border:1px solid rgba(200,150,58,.4);border-radius:3px">
         <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold);width:38px;flex-shrink:0">D${TODAY_DAY}</div>
         <div style="flex:1">
-          <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 28/03/2026</div>
+          <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 30/03/2026</div>
           <div style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-top:2px">
             ANP confirmou "situação excepcional de risco". 2 das 3 maiores distribuidoras emitiram alertas formais. Decreto 12.875 em vigor. Greve ameaçada mas não confirmada.
           </div>
@@ -1950,7 +1950,7 @@ function buildTimeline(imp, days, strike) {
     html_tl += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;padding:7px 10px;background:rgba(200,150,58,.12);border:1px solid rgba(200,150,58,.4);border-radius:3px">
       <div style="font-family:'Bebas Neue';font-size:13px;color:var(--gold);width:38px;flex-shrink:0">D${TODAY_DAY}</div>
       <div style="flex:1">
-        <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 28/03/2026</div>
+        <div style="font-size:11px;font-weight:700;color:var(--gold)">📍 ESTAMOS AQUI — 30/03/2026</div>
         <div style="font-size:8px;color:var(--text-dim);font-family:'DM Mono';margin-top:2px">ANP: situação excepcional de risco. Decreto 12.875 ativo.</div>
       </div>
       <div style="font-size:8px;font-weight:700;font-family:'DM Mono';color:var(--gold);background:rgba(200,150,58,.2);padding:3px 8px;border-radius:2px;flex-shrink:0">REAL</div>
@@ -2053,7 +2053,7 @@ function initSim() {
 // ═══════════════════════════════════════════════════════
 // GLOBAL PRICE STATE
 // ═══════════════════════════════════════════════════════
-window.PRECO = { brent: 100.9, cambio: 5.72 };
+window.PRECO = { brent: 114.8, cambio: 5.24 };
 const PRECO_BASE = { brent: 63.0, cambio: 6.19 };  // start of 2026
 const PB_REFIN   = 3.49;  // Petrobras refinaria diesel atual R$/L
 
