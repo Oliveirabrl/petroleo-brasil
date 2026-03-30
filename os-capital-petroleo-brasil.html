@@ -1445,7 +1445,7 @@ function setPage(id, btn) {
   if (id === 'map' && !mapReady) initMap();
 // Initialize global price bar
 window.addEventListener('load', () => { onPrecoChange(); });
-  if (id === 'inv' && !invReady) initInvPage();
+  if (id === 'inv') { checkPin(function(){ if(!invReady) initInvPage(); }); return; }
   if (id === 'sim' && !simReady) initSim();
 }
 
@@ -1760,13 +1760,13 @@ function buildCatList(D){
 let simReady = false;
 
 const SIM_REGIONS = [
-  { id:'norte',       name:'Norte',        depImport:.88, diasEstoque:8,  colapsoDias:3,  consumo:1.4,
+  { id:'norte',       name:'Norte',        depImport:.88, diasEstoque:18, colapsoDias:12, consumo:1.4,
     nota:'Reman a 20%. Único abastecimento via importação ou cabotagem do Sudeste.',
     lx:155, ly:90,
     d:`M 80,15 L 180,8 L 245,12 L 295,8 L 330,18 L 355,38 L 365,68
        L 355,100 L 335,118 L 310,130 L 280,140 L 250,148 L 215,152
        L 185,148 L 155,138 L 128,118 L 108,92 L 88,60 Z` },
-  { id:'nordeste',    name:'Nordeste',      depImport:.42, diasEstoque:10, colapsoDias:9,  consumo:2.1,
+  { id:'nordeste',    name:'Nordeste',      depImport:.42, diasEstoque:22, colapsoDias:20, consumo:2.1,
     nota:'Acelen (Mataripe/BA) e RNEST (PE) atendem parcialmente. Interior vulnerável.',
     lx:338, ly:140,
     d:`M 295,8 L 330,18 L 355,38 L 390,45 L 418,68 L 425,100
@@ -1774,21 +1774,21 @@ const SIM_REGIONS = [
        L 298,205 L 272,192 L 255,175 L 248,155 L 250,148
        L 280,140 L 310,130 L 335,118 L 355,100 L 365,68
        L 355,38 L 330,18 Z` },
-  { id:'centro_oeste',name:'Centro-Oeste',  depImport:.95, diasEstoque:7,  colapsoDias:5,  consumo:2.8,
+  { id:'centro_oeste',name:'Centro-Oeste',  depImport:.95, diasEstoque:20, colapsoDias:15, consumo:2.8,
     nota:'ZERO refinarias. Maior consumidor do agro. Todo diesel vem do Sudeste ou importação.',
     lx:195, ly:268,
     d:`M 128,118 L 155,138 L 185,148 L 215,152 L 248,155
        L 255,175 L 272,192 L 275,215 L 270,248 L 255,272
        L 235,292 L 210,308 L 182,315 L 155,305 L 132,285
        L 115,258 L 108,228 L 110,195 L 120,165 Z` },
-  { id:'sudeste',     name:'Sudeste',       depImport:.18, diasEstoque:15, colapsoDias:22, consumo:5.2,
+  { id:'sudeste',     name:'Sudeste',       depImport:.18, diasEstoque:40, colapsoDias:45, consumo:5.2,
     nota:'SP concentra 39% do refino nacional. Mais resiliente. Abastece outras regiões.',
     lx:330, ly:285,
     d:`M 272,192 L 298,205 L 325,212 L 352,205 L 378,210
        L 402,228 L 415,258 L 412,292 L 398,320 L 378,340
        L 352,352 L 325,348 L 298,332 L 278,308 L 268,280
        L 262,255 L 268,228 L 275,215 Z` },
-  { id:'sul',         name:'Sul',           depImport:.28, diasEstoque:12, colapsoDias:18, consumo:2.0,
+  { id:'sul',         name:'Sul',           depImport:.28, diasEstoque:30, colapsoDias:35, consumo:2.0,
     nota:'Refap (RS) e Repar (PR) garantem 72% do consumo. Dependência portuária de Paranaguá.',
     lx:295, ly:400,
     d:`M 210,308 L 235,292 L 255,272 L 268,280 L 278,308
@@ -1798,11 +1798,15 @@ const SIM_REGIONS = [
 ];
 
 function impactScore(r, importRed, days, strike) {
-  const base = importRed * r.depImport;
+  // Base: how much the import reduction actually hits this region
+  // Petrobras FUT 93% compensates ~40% of the shortfall nationally
+  const petrobrasBuffer = 0.40;
+  const effectiveRed = importRed * (1 - petrobrasBuffer) * r.depImport;
+  // Stock depletion: only kicks in meaningfully after diasEstoque
   const stockOut = days > r.diasEstoque;
-  const depletion = stockOut ? Math.min(1,(days-r.diasEstoque)/r.colapsoDias) : 0;
-  let s = base*.45 + depletion*.55;
-  if (strike) s = Math.min(1, s*1.42);
+  const depletion = stockOut ? Math.min(1,(days - r.diasEstoque) / r.colapsoDias) : 0;
+  let s = effectiveRed * 0.50 + depletion * 0.50;
+  if (strike) s = Math.min(1, s * 1.35);
   return Math.min(1, s);
 }
 
@@ -2226,6 +2230,51 @@ function updateSimPrecos(brent, cambio) {
   if (gp) { gp.textContent = '-'+pib+'%'; gp.style.color = col; }
 }
 
+
+// ── PIN SYSTEM ────────────────────────────────────────────
+const PIN_HASH = '1775'; // simple hash of PIN — not real security
+let pinUnlocked = false;
+let pinCallback = null;
+
+function simpleHash(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(16).slice(0,4);
+}
+
+function checkPin(callback) {
+  if (pinUnlocked) { callback(); return; }
+  pinCallback = callback;
+  const modal = document.getElementById('pin-modal');
+  modal.style.display = 'flex';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
+}
+
+function checkPinInput(force) {
+  const val = document.getElementById('pin-input').value;
+  if (!force && val.length < 4) return;
+  if (simpleHash(val) === PIN_HASH) {
+    pinUnlocked = true;
+    document.getElementById('pin-modal').style.display = 'none';
+    // Now navigate to inv tab
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-inv').classList.add('on');
+    document.querySelector('[data-page="inv"]').classList.add('active');
+    if (pinCallback) { pinCallback(); pinCallback = null; }
+  } else if (val.length >= 4) {
+    document.getElementById('pin-error').textContent = '✗ PIN incorreto';
+    document.getElementById('pin-input').value = '';
+  }
+}
+
+function closePinModal() {
+  document.getElementById('pin-modal').style.display = 'none';
+  pinCallback = null;
+}
+
 initMap();
 
 // ─── SUBTAB NAV ──────────────────────────────────────────────
@@ -2497,5 +2546,20 @@ async function initMap() {
   mapReady = true;
 }
 </script>
+
+<!-- ── PIN MODAL ── -->
+<div id="pin-modal" style="display:none;position:fixed;inset:0;background:rgba(6,11,18,.92);z-index:9999;backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:16px">
+  <div style="background:var(--ink-2);border:1px solid var(--ink-4);border-radius:6px;padding:32px 36px;max-width:340px;width:90%;text-align:center">
+    <div style="font-size:28px;margin-bottom:8px">🔒</div>
+    <div style="font-family:'Bebas Neue';font-size:22px;letter-spacing:.08em;color:var(--text);margin-bottom:6px">ÁREA RESTRITA</div>
+    <div style="font-size:11px;color:var(--text-dim);font-family:'DM Mono';margin-bottom:20px;line-height:1.6">Esta seção contém análises de empresas e ações.<br>Não constitui recomendação de investimento.</div>
+    <input id="pin-input" type="password" placeholder="Digite o PIN" maxlength="6"
+      style="width:100%;box-sizing:border-box;background:var(--ink-3);border:1px solid var(--ink-4);color:var(--text);font-family:'Bebas Neue';font-size:28px;text-align:center;letter-spacing:.25em;padding:10px 14px;border-radius:4px;outline:none;margin-bottom:12px"
+      oninput="checkPinInput()" onkeydown="if(event.key==='Enter')checkPinInput(true)">
+    <div id="pin-error" style="font-size:10px;color:var(--red);font-family:'DM Mono';min-height:16px;margin-bottom:10px"></div>
+    <button onclick="closePinModal()" style="background:var(--ink-3);border:1px solid var(--ink-4);color:var(--text-dim);font-family:'DM Mono';font-size:10px;padding:7px 18px;border-radius:3px;cursor:pointer">CANCELAR</button>
+  </div>
+</div>
+
 </body>
 </html>
