@@ -1909,7 +1909,7 @@ function buildTimeline(imp, days, strike) {
     { d:Math.round(20*m), t:'Sudeste começa a sentir',det:'Mesmo com 6 refinarias, demanda supera produção. SP em alerta.', thr:imp>.65&&days>=Math.round(20*m) },
     { d:30, t:'Colapso logístico nacional',        det:'Sistema trava. Hospitais, serviços essenciais em risco. IPCA dispara.', thr:imp>.75&&days>=30 },
   ];
-  const TODAY_DAY = 27; // Dia 27 confirmado — dados ANP 30/03/2026
+  const TODAY_DAY = 29; // Dia 29 — choque iniciado ~01/03/2026, hoje 30/03/2026
   let html_tl = '';
   let todayInserted = false;
 
@@ -2033,7 +2033,7 @@ function runSim() {
 
 function setRealScenario() {
   document.getElementById('sl-imp').value  = 60;
-  document.getElementById('sl-days').value = 25;
+  document.getElementById('sl-days').value = 29;
   document.getElementById('sl-greve').value= 0;
   runSim();
   // Scroll timeline to today marker
